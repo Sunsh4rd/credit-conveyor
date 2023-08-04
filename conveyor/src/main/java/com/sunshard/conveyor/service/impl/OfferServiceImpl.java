@@ -19,7 +19,7 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public List<LoanOfferDTO> createLoanOffers(LoanApplicationRequestDTO loanApplicationRequest) {
-        List<LoanOfferDTO> loanOffers = new ArrayList<>(){{
+        List<LoanOfferDTO> loanOffers = new ArrayList<>() {{
             add(createLoanOffer(false, false, loanApplicationRequest));
             add(createLoanOffer(true, false, loanApplicationRequest));
             add(createLoanOffer(false, true, loanApplicationRequest));
@@ -28,9 +28,6 @@ public class OfferServiceImpl implements OfferService {
         loanOffers.sort(Comparator.comparing(LoanOfferDTO::getRate));
         return loanOffers;
     }
-    //    private Boolean prescore(LoanApplicationRequestDTO loanApplicationRequestDTO) {
-//
-//    }
 
     private LoanOfferDTO createLoanOffer(Boolean isInsuranceEnabled,
                                          Boolean isSalaryClient,
