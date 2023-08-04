@@ -2,6 +2,7 @@ package com.sunshard.conveyor.service.impl;
 
 import com.sunshard.conveyor.exception.CreditDeniedException;
 import com.sunshard.conveyor.model.CreditDTO;
+import com.sunshard.conveyor.model.PaymentScheduleElement;
 import com.sunshard.conveyor.model.ScoringDataDTO;
 import com.sunshard.conveyor.model.enums.EmploymentStatus;
 import com.sunshard.conveyor.service.CalculationService;
@@ -9,12 +10,17 @@ import com.sunshard.conveyor.service.CalculationService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CalculationServiceImpl implements CalculationService {
 
     private final BigDecimal basicRate = BigDecimal.valueOf(15);
     @Override
     public CreditDTO calculation(ScoringDataDTO scoringData) {
+
+        System.out.println(scoringData);
+
         BigDecimal rate = basicRate;
 
         switch (scoringData.getEmployment().getEmploymentStatus()) {
@@ -92,6 +98,17 @@ public class CalculationServiceImpl implements CalculationService {
                 .isSalaryClient(scoringData.getIsSalaryClient())
                 .build();
 
-        return null;
+        List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
+        for (int i = 0; i < scoringData.getTerm(); i++) {
+            paymentSchedule.add(
+                    PaymentScheduleElement.builder()
+                            .number(i + 1)
+                            .date(LocalDate.now().plusMonths(i))
+
+                            .build()
+            );
+        }
+        credit.setPaymentSchedule(paymentSchedule);
+        return credit;
     }
 }

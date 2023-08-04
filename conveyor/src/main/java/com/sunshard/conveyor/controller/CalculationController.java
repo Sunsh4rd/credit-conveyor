@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class CalculationController implements CalculationAPI {
+
     private final CalculationService calculationService = new CalculationServiceImpl();
 
     @Override

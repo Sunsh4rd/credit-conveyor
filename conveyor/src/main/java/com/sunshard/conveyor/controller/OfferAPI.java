@@ -18,7 +18,9 @@ public interface OfferAPI {
 
     @PostMapping("/conveyor/offers")
     @Operation(summary = "Create loan offers",
-            responses = {@ApiResponse(responseCode = "200", description = "Successfully created")},
+            responses = {@ApiResponse(responseCode = "200", description = "Successfully created"),
+                    @ApiResponse(responseCode = "400", description = "Invalid data provided")
+            },
             description = "Provide possible loan offers"
     )
     @ResponseBody
