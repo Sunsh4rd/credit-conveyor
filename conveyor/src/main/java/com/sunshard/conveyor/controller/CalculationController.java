@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CalculationController implements CalculationAPI {
 
-    private final CalculationService calculationService = new CalculationServiceImpl();
+    private final CalculationService calculationService;
 
     @Override
     public ResponseEntity<CreditDTO> calculation(ScoringDataDTO scoringData) {
