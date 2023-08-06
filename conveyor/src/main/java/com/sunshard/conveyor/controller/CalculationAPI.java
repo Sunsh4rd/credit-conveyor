@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.Valid;
+
 @Tag(name = "Conveyor", description = "Credit conveyor methods")
 public interface CalculationAPI {
     @PostMapping("/conveyor/calculation")
@@ -19,5 +21,7 @@ public interface CalculationAPI {
             description = "Calculate credit data"
     )
     @ResponseBody
-    ResponseEntity<CreditDTO> calculation(@RequestBody ScoringDataDTO scoringData);
+    ResponseEntity<CreditDTO> calculation(
+            @Valid @RequestBody ScoringDataDTO scoringData
+    );
 }

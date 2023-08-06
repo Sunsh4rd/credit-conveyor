@@ -3,7 +3,6 @@ package com.sunshard.conveyor.controller;
 import com.sunshard.conveyor.model.CreditDTO;
 import com.sunshard.conveyor.model.ScoringDataDTO;
 import com.sunshard.conveyor.service.CalculationService;
-import com.sunshard.conveyor.service.impl.CalculationServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

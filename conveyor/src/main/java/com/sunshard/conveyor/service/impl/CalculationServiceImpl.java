@@ -4,13 +4,11 @@ import com.sunshard.conveyor.exception.CreditDeniedException;
 import com.sunshard.conveyor.model.CreditDTO;
 import com.sunshard.conveyor.model.PaymentScheduleElement;
 import com.sunshard.conveyor.model.ScoringDataDTO;
-import com.sunshard.conveyor.model.enums.EmploymentStatus;
 import com.sunshard.conveyor.service.CalculationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;

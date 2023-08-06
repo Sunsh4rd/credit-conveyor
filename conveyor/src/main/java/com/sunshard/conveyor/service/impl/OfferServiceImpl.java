@@ -33,9 +33,10 @@ public class OfferServiceImpl implements OfferService {
         return loanOffers;
     }
 
-    private LoanOfferDTO createLoanOffer(Boolean isInsuranceEnabled,
-                                         Boolean isSalaryClient,
-                                         LoanApplicationRequestDTO loanApplicationRequest
+    private LoanOfferDTO createLoanOffer(
+            Boolean isInsuranceEnabled,
+            Boolean isSalaryClient,
+            LoanApplicationRequestDTO loanApplicationRequest
     ) {
         LoanOfferDTO loanOfferDTO = LoanOfferDTO.builder()
                 .requestedAmount(loanApplicationRequest.getAmount())

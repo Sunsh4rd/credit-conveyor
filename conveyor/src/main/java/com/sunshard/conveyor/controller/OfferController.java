@@ -3,7 +3,6 @@ package com.sunshard.conveyor.controller;
 import com.sunshard.conveyor.model.LoanApplicationRequestDTO;
 import com.sunshard.conveyor.model.LoanOfferDTO;
 import com.sunshard.conveyor.service.OfferService;
-import com.sunshard.conveyor.service.impl.OfferServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
