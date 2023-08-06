@@ -6,6 +6,7 @@ import com.sunshard.conveyor.model.PaymentScheduleElement;
 import com.sunshard.conveyor.model.ScoringDataDTO;
 import com.sunshard.conveyor.model.enums.EmploymentStatus;
 import com.sunshard.conveyor.service.CalculationService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,7 +20,8 @@ import java.util.List;
 @Service
 public class CalculationServiceImpl implements CalculationService {
 
-    private final BigDecimal basicRate = BigDecimal.valueOf(15);
+    @Value("${credit.basic-rate}")
+    private BigDecimal basicRate;
     @Override
     public CreditDTO calculation(ScoringDataDTO scoringData) {
 

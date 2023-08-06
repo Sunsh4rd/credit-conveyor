@@ -3,6 +3,7 @@ package com.sunshard.conveyor.service.impl;
 import com.sunshard.conveyor.model.LoanApplicationRequestDTO;
 import com.sunshard.conveyor.model.LoanOfferDTO;
 import com.sunshard.conveyor.service.OfferService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -14,8 +15,11 @@ import java.util.List;
 @Service
 public class OfferServiceImpl implements OfferService {
 
-    private final BigDecimal basicRate = BigDecimal.valueOf(15);
-    private final BigDecimal insurancePrice = BigDecimal.valueOf(100000);
+    @Value("${credit.basic-rate}")
+    private BigDecimal basicRate;
+
+    @Value("${credit.insurance-price}")
+    private BigDecimal insurancePrice;
 
     @Override
     public List<LoanOfferDTO> createLoanOffers(LoanApplicationRequestDTO loanApplicationRequest) {
