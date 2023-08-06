@@ -1,4 +1,4 @@
-package com.sunshard.conveyor.service;
+package com.sunshard.conveyor.config.util;
 
 import java.math.BigDecimal;
 import java.math.MathContext;

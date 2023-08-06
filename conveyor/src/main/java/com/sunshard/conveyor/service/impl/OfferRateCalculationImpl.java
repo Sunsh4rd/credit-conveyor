@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
-import static com.sunshard.conveyor.service.Constants.THREE;
+import static com.sunshard.conveyor.config.util.Constants.THREE;
 
 @Service
 public class OfferRateCalculationImpl implements OfferRateCalculationService {

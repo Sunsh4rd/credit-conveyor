@@ -1,5 +1,6 @@
 package com.sunshard.conveyor.service.impl;
 
+import com.sunshard.conveyor.config.util.CreditProperties;
 import com.sunshard.conveyor.model.LoanApplicationRequestDTO;
 import com.sunshard.conveyor.model.LoanOfferDTO;
 import com.sunshard.conveyor.service.*;
@@ -18,6 +19,7 @@ public class OfferServiceImpl implements OfferService {
     private final OfferRateCalculationService offerRateCalculationService;
     private final TotalAmountCalculationService totalAmountCalculationService;
     private final MonthlyPaymentCalculationService monthlyPaymentCalculationService;
+    private final MonthlyRateCalculationService monthlyRateCalculationService;
     private final CreditProperties creditProperties;
 
     @Override
@@ -49,19 +51,19 @@ public class OfferServiceImpl implements OfferService {
         );
         loanOffer.setRate(rate);
 
-        BigDecimal totalAmount = totalAmountCalculationService.calculateTotalAmount(
-                loanApplicationRequest.getAmount(),
-                isInsuranceEnabled,
-                creditProperties.getInsurancePrice(),
-                rate
-        );
-        loanOffer.setTotalAmount(totalAmount);
-
         BigDecimal monthlyPayment = monthlyPaymentCalculationService.calculateMonthlyPayment(
-                totalAmount,
+                monthlyRateCalculationService.calculateMonthlyRate(rate),
+                loanApplicationRequest.getAmount(),
                 loanApplicationRequest.getTerm()
         );
         loanOffer.setMonthlyPayment(monthlyPayment);
+
+        BigDecimal totalAmount = totalAmountCalculationService.calculateTotalAmount(
+                monthlyPayment,
+                loanApplicationRequest.getTerm()
+        );
+        loanOffer.setTotalAmount(totalAmount);
+
         return loanOffer;
     }
 }

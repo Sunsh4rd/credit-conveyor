@@ -1,4 +1,4 @@
-package com.sunshard.conveyor.service;
+package com.sunshard.conveyor.config.util;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
