@@ -17,7 +17,8 @@ public interface CalculationAPI {
     @PostMapping("/conveyor/calculation")
     @Operation(
             summary = "make calculations",
-            responses = {@ApiResponse(responseCode = "200", description = "Successfully created")},
+            responses = {@ApiResponse(responseCode = "200", description = "Successfully created"),
+                    @ApiResponse(responseCode = "400", description = "You can not apply for the loan")},
             description = "Calculate credit data"
     )
     @ResponseBody
