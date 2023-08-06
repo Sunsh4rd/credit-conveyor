@@ -2,24 +2,23 @@ package com.sunshard.conveyor.service.impl;
 
 import com.sunshard.conveyor.model.LoanApplicationRequestDTO;
 import com.sunshard.conveyor.model.LoanOfferDTO;
-import com.sunshard.conveyor.service.OfferService;
-import org.springframework.beans.factory.annotation.Value;
+import com.sunshard.conveyor.service.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class OfferServiceImpl implements OfferService {
 
-    @Value("${credit.basic-rate}")
-    private BigDecimal basicRate;
-
-    @Value("${credit.insurance-price}")
-    private BigDecimal insurancePrice;
+    private final OfferRateCalculationService offerRateCalculationService;
+    private final TotalAmountCalculationService totalAmountCalculationService;
+    private final MonthlyPaymentCalculationService monthlyPaymentCalculationService;
+    private final CreditProperties creditProperties;
 
     @Override
     public List<LoanOfferDTO> createLoanOffers(LoanApplicationRequestDTO loanApplicationRequest) {
@@ -38,26 +37,31 @@ public class OfferServiceImpl implements OfferService {
             Boolean isSalaryClient,
             LoanApplicationRequestDTO loanApplicationRequest
     ) {
-        LoanOfferDTO loanOfferDTO = LoanOfferDTO.builder()
+        LoanOfferDTO loanOffer = LoanOfferDTO.builder()
                 .requestedAmount(loanApplicationRequest.getAmount())
                 .term(loanApplicationRequest.getTerm())
                 .isInsuranceEnabled(isInsuranceEnabled)
                 .isSalaryClient(isSalaryClient)
                 .build();
 
-        BigDecimal rate = isInsuranceEnabled ? basicRate.subtract(BigDecimal.valueOf(3)) : basicRate;
-        rate = isSalaryClient ? rate.subtract(BigDecimal.ONE) : rate;
-        loanOfferDTO.setRate(rate);
+        BigDecimal rate = offerRateCalculationService.calculateRate(
+                creditProperties.getBasicRate(), isInsuranceEnabled, isSalaryClient
+        );
+        loanOffer.setRate(rate);
 
-        BigDecimal totalAmount = isInsuranceEnabled
-                ? loanOfferDTO.getRequestedAmount()
-                .add(insurancePrice)
-                .multiply(BigDecimal.valueOf(100).add(loanOfferDTO.getRate())).divide(BigDecimal.valueOf(100))
-                : loanOfferDTO.getRequestedAmount()
-                .multiply(BigDecimal.valueOf(100).add(loanOfferDTO.getRate())).divide(BigDecimal.valueOf(100));
-        loanOfferDTO.setTotalAmount(totalAmount);
-        BigDecimal monthlyPayment = totalAmount.divide(BigDecimal.valueOf(loanOfferDTO.getTerm()), 2, RoundingMode.HALF_UP);
-        loanOfferDTO.setMonthlyPayment(monthlyPayment);
-        return loanOfferDTO;
+        BigDecimal totalAmount = totalAmountCalculationService.calculateTotalAmount(
+                loanApplicationRequest.getAmount(),
+                isInsuranceEnabled,
+                creditProperties.getInsurancePrice(),
+                rate
+        );
+        loanOffer.setTotalAmount(totalAmount);
+
+        BigDecimal monthlyPayment = monthlyPaymentCalculationService.calculateMonthlyPayment(
+                totalAmount,
+                loanApplicationRequest.getTerm()
+        );
+        loanOffer.setMonthlyPayment(monthlyPayment);
+        return loanOffer;
     }
 }

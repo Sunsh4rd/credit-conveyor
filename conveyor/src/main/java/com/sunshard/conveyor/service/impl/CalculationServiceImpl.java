@@ -5,27 +5,30 @@ import com.sunshard.conveyor.model.CreditDTO;
 import com.sunshard.conveyor.model.PaymentScheduleElement;
 import com.sunshard.conveyor.model.ScoringDataDTO;
 import com.sunshard.conveyor.service.CalculationService;
-import org.springframework.beans.factory.annotation.Value;
+import com.sunshard.conveyor.service.CreditProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.sunshard.conveyor.service.Constants.*;
+
 @Service
+@RequiredArgsConstructor
 public class CalculationServiceImpl implements CalculationService {
 
-    @Value("${credit.basic-rate}")
-    private BigDecimal basicRate;
+    private final CreditProperties creditProperties;
+    
     @Override
     public CreditDTO calculation(ScoringDataDTO scoringData) {
 
         System.out.println(scoringData);
 
-        BigDecimal rate = basicRate;
+        BigDecimal rate = creditProperties.getBasicRate();
 
         switch (scoringData.getEmployment().getEmploymentStatus()) {
             case UNEMPLOYED:
@@ -40,26 +43,26 @@ public class CalculationServiceImpl implements CalculationService {
 
         switch (scoringData.getEmployment().getPosition()) {
             case MIDDLE_MANAGER:
-                rate = rate.subtract(BigDecimal.valueOf(2));
+                rate = rate.subtract(TWO);
                 break;
             case TOP_MANAGER:
-                rate = rate.subtract(BigDecimal.valueOf(4));
+                rate = rate.subtract(FOUR);
                 break;
         }
 
         if (scoringData.getAmount().compareTo(
-                scoringData.getEmployment().getSalary().multiply(BigDecimal.valueOf(20))) > 0) {
+                scoringData.getEmployment().getSalary().multiply(TWENTY)) > 0) {
             throw new CreditDeniedException();
         }
 
         switch (scoringData.getMaritalStatus()) {
             case MARRIED:
-                rate = rate.subtract(BigDecimal.valueOf(3));
+                rate = rate.subtract(THREE);
                 break;
             case NOT_MARRIED:
                 break;
             case DIVORCED:
-                rate = rate.add(BigDecimal.valueOf(1));
+                rate = rate.add(BigDecimal.ONE);
                 break;
         }
 
@@ -76,17 +79,17 @@ public class CalculationServiceImpl implements CalculationService {
             case FEMALE:
                 if (ChronoUnit.YEARS.between(scoringData.getBirthDate(), LocalDate.now()) >= 35 ||
                         ChronoUnit.YEARS.between(scoringData.getBirthDate(), LocalDate.now()) <= 60) {
-                    rate = rate.subtract(BigDecimal.valueOf(3));
+                    rate = rate.subtract(THREE);
                 }
                 break;
             case MALE:
                 if (ChronoUnit.YEARS.between(scoringData.getBirthDate(), LocalDate.now()) >= 30 ||
                         ChronoUnit.YEARS.between(scoringData.getBirthDate(), LocalDate.now()) <= 55) {
-                    rate = rate.subtract(BigDecimal.valueOf(3));
+                    rate = rate.subtract(THREE);
                 }
                 break;
             case NON_BINARY:
-                rate = rate.add(BigDecimal.valueOf(3));
+                rate = rate.add(THREE);
                 break;
         }
 
@@ -104,12 +107,12 @@ public class CalculationServiceImpl implements CalculationService {
                 .build();
 
         BigDecimal monthlyRate = rate.divide(
-                BigDecimal.valueOf(100).multiply(BigDecimal.valueOf(12)), 7, RoundingMode.HALF_UP);
+                HUNDRED.multiply(TWELVE), SCALE);
 
         BigDecimal num = monthlyRate.multiply(BigDecimal.ONE.add(monthlyRate).pow(scoringData.getTerm()));
         BigDecimal denominator = BigDecimal.ONE.add(monthlyRate).pow(scoringData.getTerm()).subtract(BigDecimal.ONE);
 
-        BigDecimal annuityCoefficient = num.divide(denominator, 7, RoundingMode.HALF_UP);
+        BigDecimal annuityCoefficient = num.divide(denominator, SCALE);
         BigDecimal monthlyPayment = annuityCoefficient.multiply(scoringData.getAmount());
 
         credit.setMonthlyPayment(monthlyPayment);
@@ -119,9 +122,9 @@ public class CalculationServiceImpl implements CalculationService {
         for (int i = 0; i < scoringData.getTerm(); i++) {
             LocalDate nextPaymentDate = LocalDate.now().plusMonths(i + 1);
             BigDecimal nextInterestPayment = remainingDebt
-                    .multiply(rate).divide(BigDecimal.valueOf(100), 7, RoundingMode.HALF_UP)
+                    .multiply(rate).divide(HUNDRED, SCALE)
                     .multiply(BigDecimal.valueOf(nextPaymentDate.lengthOfMonth()))
-                    .divide(BigDecimal.valueOf(nextPaymentDate.lengthOfYear()), 7, RoundingMode.HALF_UP);
+                    .divide(BigDecimal.valueOf(nextPaymentDate.lengthOfYear()), SCALE);
             BigDecimal nextDebtPayment = monthlyPayment.subtract(nextInterestPayment);
             remainingDebt = remainingDebt.subtract(nextDebtPayment);
             paymentSchedule.add(
@@ -140,9 +143,9 @@ public class CalculationServiceImpl implements CalculationService {
                 .reduce(BigDecimal::add)
                 .orElseThrow();
         BigDecimal psk = totalPayment
-                .divide(scoringData.getAmount(), 7, RoundingMode.HALF_UP)
+                .divide(scoringData.getAmount(), SCALE)
                 .subtract(BigDecimal.ONE)
-                .multiply(BigDecimal.valueOf(100));
+                .multiply(HUNDRED);
         credit.setPsk(psk);
         credit.setPaymentSchedule(paymentSchedule);
 
