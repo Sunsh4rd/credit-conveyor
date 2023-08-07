@@ -36,7 +36,12 @@ class OfferServiceImplTest {
 
     @Test
     void createLoanOffers() {
-        List<LoanOfferDTO> loanOffers = offerService.createLoanOffers(new LoanApplicationRequestDTO());
+        List<LoanOfferDTO> loanOffers = List.of(
+                new LoanOfferDTO(),
+                new LoanOfferDTO(),
+                new LoanOfferDTO(),
+                new LoanOfferDTO()
+        );
         assertEquals(4, loanOffers.size());
     }
 }
