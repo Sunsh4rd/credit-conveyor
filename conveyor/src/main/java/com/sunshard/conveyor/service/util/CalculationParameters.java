@@ -1,10 +1,10 @@
-package com.sunshard.conveyor.config.util;
+package com.sunshard.conveyor.service.util;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
-public class Constants {
+public class CalculationParameters {
     public static final BigDecimal TWO = BigDecimal.valueOf(2);
     public static final BigDecimal THREE = BigDecimal.valueOf(3);
     public static final BigDecimal FOUR = BigDecimal.valueOf(4);

@@ -1,9 +1,9 @@
 package com.sunshard.conveyor.service.impl;
 
-import com.sunshard.conveyor.config.util.CreditProperties;
 import com.sunshard.conveyor.model.LoanApplicationRequestDTO;
 import com.sunshard.conveyor.model.LoanOfferDTO;
-import com.sunshard.conveyor.service.*;
+import com.sunshard.conveyor.service.OfferService;
+import com.sunshard.conveyor.service.ScoringService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,23 +12,34 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Creates possible loan offers based on received loan application request
+ */
+
 @Service
 @RequiredArgsConstructor
 public class OfferServiceImpl implements OfferService {
 
-    private final OfferRateCalculationService offerRateCalculationService;
-    private final TotalAmountCalculationService totalAmountCalculationService;
-    private final MonthlyPaymentCalculationService monthlyPaymentCalculationService;
-    private final MonthlyRateCalculationService monthlyRateCalculationService;
-    private final CreditProperties creditProperties;
+    private final ScoringService scoringService;
+
+//    private final OfferRateCalculationService offerRateCalculationService;
+//    private final TotalAmountCalculationService totalAmountCalculationService;
+//    private final MonthlyPaymentCalculationService monthlyPaymentCalculationService;
+//    private final MonthlyRateCalculationService monthlyRateCalculationService;
+
+    /**
+     *
+     * @param request
+     * @return
+     */
 
     @Override
-    public List<LoanOfferDTO> createLoanOffers(LoanApplicationRequestDTO loanApplicationRequest) {
+    public List<LoanOfferDTO> createLoanOffers(LoanApplicationRequestDTO request) {
         List<LoanOfferDTO> loanOffers = new ArrayList<>() {{
-            add(createLoanOffer(false, false, loanApplicationRequest));
-            add(createLoanOffer(true, false, loanApplicationRequest));
-            add(createLoanOffer(false, true, loanApplicationRequest));
-            add(createLoanOffer(true, true, loanApplicationRequest));
+            add(createLoanOffer(false, false, request));
+            add(createLoanOffer(true, false, request));
+            add(createLoanOffer(false, true, request));
+            add(createLoanOffer(true, true, request));
         }};
         loanOffers.sort(Comparator.comparing(LoanOfferDTO::getRate));
         return loanOffers;
@@ -37,33 +48,29 @@ public class OfferServiceImpl implements OfferService {
     private LoanOfferDTO createLoanOffer(
             Boolean isInsuranceEnabled,
             Boolean isSalaryClient,
-            LoanApplicationRequestDTO loanApplicationRequest
+            LoanApplicationRequestDTO request
     ) {
-        LoanOfferDTO loanOffer = LoanOfferDTO.builder()
-                .requestedAmount(loanApplicationRequest.getAmount())
-                .term(loanApplicationRequest.getTerm())
+        BigDecimal rate = scoringService.calculateRate(isInsuranceEnabled, isSalaryClient);
+
+        BigDecimal monthlyPayment = scoringService.calculateMonthlyPayment(
+                scoringService.calculateMonthlyRate(rate),
+                scoringService.calculateLoanAmountBasedOnInsuranceStatus(request.getAmount(), isInsuranceEnabled),
+                request.getTerm()
+        );
+
+        BigDecimal totalAmount = scoringService.calculateTotalAmount(
+                monthlyPayment,
+                request.getTerm()
+        );
+
+        return LoanOfferDTO.builder()
+                .requestedAmount(request.getAmount())
+                .rate(rate)
+                .monthlyPayment(monthlyPayment)
+                .totalAmount(totalAmount)
+                .term(request.getTerm())
                 .isInsuranceEnabled(isInsuranceEnabled)
                 .isSalaryClient(isSalaryClient)
                 .build();
-
-        BigDecimal rate = offerRateCalculationService.calculateRate(
-                creditProperties.getBasicRate(), isInsuranceEnabled, isSalaryClient
-        );
-        loanOffer.setRate(rate);
-
-        BigDecimal monthlyPayment = monthlyPaymentCalculationService.calculateMonthlyPayment(
-                monthlyRateCalculationService.calculateMonthlyRate(rate),
-                loanApplicationRequest.getAmount(),
-                loanApplicationRequest.getTerm()
-        );
-        loanOffer.setMonthlyPayment(monthlyPayment);
-
-        BigDecimal totalAmount = totalAmountCalculationService.calculateTotalAmount(
-                monthlyPayment,
-                loanApplicationRequest.getTerm()
-        );
-        loanOffer.setTotalAmount(totalAmount);
-
-        return loanOffer;
     }
 }

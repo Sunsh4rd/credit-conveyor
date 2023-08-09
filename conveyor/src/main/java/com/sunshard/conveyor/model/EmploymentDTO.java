@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 
 @Data
@@ -27,7 +26,6 @@ public class EmploymentDTO {
             pattern = "^[0-9]{12}$",
             description = "loaner's employer INN"
     )
-    @Pattern(regexp = "^[0-9]{12}$")
     private String employerINN;
 
     @Schema(type = "integer",

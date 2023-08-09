@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 
@@ -21,8 +20,7 @@ public interface CalculationAPI {
                     @ApiResponse(responseCode = "400", description = "You can not apply for the loan")},
             description = "Calculate credit data"
     )
-    @ResponseBody
-    ResponseEntity<CreditDTO> calculation(
+    ResponseEntity<CreditDTO> calculateCreditData(
             @Valid @RequestBody ScoringDataDTO scoringData
     );
 }

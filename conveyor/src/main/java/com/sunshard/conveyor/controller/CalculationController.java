@@ -22,7 +22,7 @@ public class CalculationController implements CalculationAPI {
     private static final Logger logger = LoggerFactory.getLogger(CalculationController.class);
 
     @Override
-    public ResponseEntity<CreditDTO> calculation(ScoringDataDTO scoringData) {
+    public ResponseEntity<CreditDTO> calculateCreditData(ScoringDataDTO scoringData) {
         CreditDTO credit = null;
         try {
             logger.info(
@@ -30,7 +30,7 @@ public class CalculationController implements CalculationAPI {
                     scoringData,
                     LocalDateTime.now()
             );
-            credit = calculationService.calculation(scoringData);
+            credit = calculationService.calculateCreditData(scoringData);
             logger.info(
                     "New credit data was created:\n{} at {}",
                     credit,

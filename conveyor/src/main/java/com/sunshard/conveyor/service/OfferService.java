@@ -6,5 +6,5 @@ import com.sunshard.conveyor.model.LoanOfferDTO;
 import java.util.List;
 
 public interface OfferService {
-    List<LoanOfferDTO> createLoanOffers(LoanApplicationRequestDTO loanApplicationRequest);
+    List<LoanOfferDTO> createLoanOffers(LoanApplicationRequestDTO request);
 }
