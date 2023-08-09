@@ -29,15 +29,12 @@ public class CalculationServiceImpl implements CalculationService {
     @Override
     public CreditDTO calculateCreditData(ScoringDataDTO scoringData) {
 
-        try {
-            scoringService.validateScoringData(
-                    scoringData.getEmployment(),
-                    scoringData.getAmount(),
-                    scoringData.getBirthDate()
-            );
-        } catch (CreditDeniedException exception) {
-            System.out.println("credit denied");
-        }
+        scoringService.validateScoringData(
+                scoringData.getEmployment(),
+                scoringData.getAmount(),
+                scoringData.getBirthDate()
+        );
+
 
         BigDecimal rate = scoringService.calculateCreditRate(scoringData);
 

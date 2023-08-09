@@ -16,6 +16,6 @@ public class OfferController implements OfferAPI {
     private final OfferService offerService;
     @Override
     public ResponseEntity<List<LoanOfferDTO>> createLoanOffers(LoanApplicationRequestDTO request) {
-        return  ResponseEntity.ok(offerService.createLoanOffers(request));
+        return ResponseEntity.ok(offerService.createLoanOffers(request));
     }
 }

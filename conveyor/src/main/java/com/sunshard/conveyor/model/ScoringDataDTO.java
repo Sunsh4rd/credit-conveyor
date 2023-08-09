@@ -8,10 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -83,19 +80,19 @@ public class ScoringDataDTO {
     @NotBlank
     @Schema(
             type = "string",
-            pattern = "^[0-9]{4}$",
             example = "6020",
             description = "your passport series"
     )
+    @Pattern(regexp = "^[0-9]{4}$")
     private String passportSeries;
 
     @NotBlank
     @Schema(
             type = "string",
-            pattern = "^[0-9]{6}$",
             example = "425513",
             description = "your passport number"
     )
+    @Pattern(regexp = "^[0-9]{6}$")
     private String passportNumber;
 
     @NotNull
