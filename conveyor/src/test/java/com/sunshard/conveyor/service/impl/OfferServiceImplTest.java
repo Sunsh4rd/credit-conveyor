@@ -1,7 +1,6 @@
 package com.sunshard.conveyor.service.impl;
 
 import com.sunshard.conveyor.model.LoanApplicationRequestDTO;
-import com.sunshard.conveyor.model.LoanOfferDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,9 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class OfferServiceImplTest {
     @InjectMocks
@@ -23,9 +20,8 @@ class OfferServiceImplTest {
     private ScoringServiceImpl scoringService;
 
     @Test
-    void createLoanOffers() {
-        List<LoanOfferDTO> loanOffers = offerService.createLoanOffers(
-                LoanApplicationRequestDTO.builder()
+    void createLoanOffers_verifyTimesCalculateRateInvoked() {
+        LoanApplicationRequestDTO request = LoanApplicationRequestDTO.builder()
                 .amount(BigDecimal.valueOf(300000))
                 .term(18)
                 .firstName("first")
@@ -35,8 +31,13 @@ class OfferServiceImplTest {
                 .birthdate(LocalDate.parse("2000-01-01"))
                 .passportSeries("1231")
                 .passportNumber("123456")
-                .build()
-        );
-        assertEquals(4, loanOffers.size());
+                .build();
+
+        offerService.createLoanOffers(request);
+
+        Mockito.verify(scoringService, Mockito.times(1)).calculateRate(true, true);
+        Mockito.verify(scoringService, Mockito.times(1)).calculateRate(true, false);
+        Mockito.verify(scoringService, Mockito.times(1)).calculateRate(false, true);
+        Mockito.verify(scoringService, Mockito.times(1)).calculateRate(false, false);
     }
 }
