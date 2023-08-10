@@ -18,11 +18,9 @@ public class CalculationController implements CalculationAPI {
 
     @Override
     public ResponseEntity<CreditDTO> calculateCreditData(ScoringDataDTO scoringData) {
-        logger.info("New scoring data was received:");
-        logger.info(scoringData);
+        logger.info("New scoring data was received:\n{}", scoringData);
         CreditDTO creditData = calculationService.calculateCreditData(scoringData);
-        logger.info("Calculated credit data:");
-        logger.info(creditData);
+        logger.info("Calculated credit data:\n{}", creditData);
         return ResponseEntity.ok(creditData);
     }
 }

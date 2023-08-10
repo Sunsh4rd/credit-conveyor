@@ -6,27 +6,37 @@ import com.sunshard.conveyor.model.PaymentScheduleElement;
 import com.sunshard.conveyor.model.ScoringDataDTO;
 import com.sunshard.conveyor.model.enums.EmploymentStatus;
 import com.sunshard.conveyor.service.ScoringService;
-import com.sunshard.conveyor.service.util.CalculationParameters;
-import com.sunshard.conveyor.service.util.CreditProperties;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.sunshard.conveyor.service.util.CalculationParameters.*;
 
 /**
  * Service for encapsulating <i>loan offer</i> and <i>credit data</i> parameters calculations
  */
 @Service
 @RequiredArgsConstructor
+@Configuration
 public class ScoringServiceImpl implements ScoringService {
-
-    private final CreditProperties creditProperties;
+    @Value("${credit.basic-rate}")
+    private BigDecimal basicRate;
+    @Value("${credit.insurance-price}")
+    private BigDecimal insurancePrice;
+    private static final BigDecimal TWO_PERCENT = BigDecimal.valueOf(2);
+    private static final BigDecimal THREE_PERCENT = BigDecimal.valueOf(3);
+    private static final BigDecimal FOUR_PERCENT = BigDecimal.valueOf(4);
+    private static final BigDecimal MONTHS_IN_YEAR = BigDecimal.valueOf(12);
+    private static final BigDecimal TWENTY_TIMES = BigDecimal.valueOf(20);
+    private static final BigDecimal HUNDRED_PERCENT = BigDecimal.valueOf(100);
+    private static final MathContext PRECISION = new MathContext(7, RoundingMode.HALF_UP);
 
     /**
      * Calculate <i>loan rate</i> based on <i>isInsuranceEnabled</i> and <i>isSalaryClient</i>.<br>
@@ -38,8 +48,8 @@ public class ScoringServiceImpl implements ScoringService {
      */
     @Override
     public BigDecimal calculateRate(Boolean isInsuranceEnabled, Boolean isSalaryClient) {
-        BigDecimal currentRate = creditProperties.getBasicRate();
-        BigDecimal rate = isInsuranceEnabled ? currentRate.subtract(THREE) : currentRate;
+        BigDecimal currentRate = basicRate;
+        BigDecimal rate = isInsuranceEnabled ? currentRate.subtract(THREE_PERCENT) : currentRate;
         return isSalaryClient ? rate.subtract(BigDecimal.ONE) : rate;
     }
 
@@ -51,7 +61,7 @@ public class ScoringServiceImpl implements ScoringService {
      */
     @Override
     public BigDecimal calculateMonthlyRate(BigDecimal rate) {
-        return rate.divide(CalculationParameters.HUNDRED.multiply(TWELVE), SCALE);
+        return rate.divide(HUNDRED_PERCENT.multiply(MONTHS_IN_YEAR), PRECISION);
     }
 
     /**
@@ -68,7 +78,7 @@ public class ScoringServiceImpl implements ScoringService {
         BigDecimal numerator = monthlyRate.multiply(BigDecimal.ONE.add(monthlyRate).pow(term));
         BigDecimal denominator = BigDecimal.ONE.add(monthlyRate).pow(term).subtract(BigDecimal.ONE);
 
-        BigDecimal annuityCoefficient = numerator.divide(denominator, SCALE);
+        BigDecimal annuityCoefficient = numerator.divide(denominator, PRECISION);
         return annuityCoefficient.multiply(totalAmount);
     }
 
@@ -80,7 +90,7 @@ public class ScoringServiceImpl implements ScoringService {
      */
     @Override
     public BigDecimal calculateLoanAmountBasedOnInsuranceStatus(BigDecimal amount, Boolean isInsuranceEnabled) {
-        return isInsuranceEnabled ? amount.add(creditProperties.getInsurancePrice()) : amount;
+        return isInsuranceEnabled ? amount.add(insurancePrice) : amount;
     }
 
     /**
@@ -106,14 +116,14 @@ public class ScoringServiceImpl implements ScoringService {
     public void validateScoringData(EmploymentDTO employmentData,
                                     BigDecimal amount,
                                     LocalDate birthDate
-    ) throws CreditDeniedException {
+    ) {
         List<String> invalidDataDescription = new ArrayList<>();
 
         if (employmentData.getEmploymentStatus().equals(EmploymentStatus.UNEMPLOYED)) {
             invalidDataDescription.add("Unable to apply for the loan because of the employment status (UNEMPLOYED)");
         }
 
-        if (amount.compareTo(employmentData.getSalary().multiply(TWENTY)) > 0) {
+        if (amount.compareTo(employmentData.getSalary().multiply(TWENTY_TIMES)) > 0) {
             invalidDataDescription.add("Unable to apply for the loan because the amount is too large");
         }
 
@@ -129,7 +139,7 @@ public class ScoringServiceImpl implements ScoringService {
         }
 
         if (!invalidDataDescription.isEmpty()) {
-            throw new CreditDeniedException(invalidDataDescription.get(0));
+            throw new CreditDeniedException(String.join(", ", invalidDataDescription));
         }
     }
 
@@ -140,7 +150,7 @@ public class ScoringServiceImpl implements ScoringService {
      */
     @Override
     public BigDecimal calculateCreditRate(ScoringDataDTO scoringData) {
-        BigDecimal rate = new BigDecimal(creditProperties.getBasicRate().toString());
+        BigDecimal rate = new BigDecimal(basicRate.toString());
 
         switch (scoringData.getEmployment().getEmploymentStatus()) {
             case SELF_EMPLOYED:
@@ -148,25 +158,25 @@ public class ScoringServiceImpl implements ScoringService {
                 rate = rate.add(BigDecimal.ONE);
                 break;
             case BUSINESS_OWNER:
-                rate = rate.add(THREE);
+                rate = rate.add(THREE_PERCENT);
                 break;
         }
 
         switch (scoringData.getEmployment().getPosition()) {
             case WORKER:
             case MIDDLE_MANAGER:
-                rate = rate.subtract(TWO);
+                rate = rate.subtract(TWO_PERCENT);
                 break;
             case TOP_MANAGER:
-                rate = rate.subtract(FOUR);
+                rate = rate.subtract(FOUR_PERCENT);
                 break;
             case OWNER:
-                rate = rate.subtract(THREE);
+                rate = rate.subtract(THREE_PERCENT);
         }
 
         switch (scoringData.getMaritalStatus()) {
             case MARRIED:
-                rate = rate.subtract(THREE);
+                rate = rate.subtract(THREE_PERCENT);
                 break;
             case SINGLE:
                 break;
@@ -174,7 +184,7 @@ public class ScoringServiceImpl implements ScoringService {
                 rate = rate.add(BigDecimal.ONE);
                 break;
             case WIDOW_WIDOWER:
-                rate = rate.subtract(TWO);
+                rate = rate.subtract(TWO_PERCENT);
         }
 
         if (scoringData.getDependentAmount() > 1) {
@@ -185,17 +195,17 @@ public class ScoringServiceImpl implements ScoringService {
             case FEMALE:
                 if (ChronoUnit.YEARS.between(scoringData.getBirthDate(), LocalDate.now()) >= 35 ||
                         ChronoUnit.YEARS.between(scoringData.getBirthDate(), LocalDate.now()) <= 60) {
-                    rate = rate.subtract(THREE);
+                    rate = rate.subtract(THREE_PERCENT);
                 }
                 break;
             case MALE:
                 if (ChronoUnit.YEARS.between(scoringData.getBirthDate(), LocalDate.now()) >= 30 ||
                         ChronoUnit.YEARS.between(scoringData.getBirthDate(), LocalDate.now()) <= 55) {
-                    rate = rate.subtract(THREE);
+                    rate = rate.subtract(THREE_PERCENT);
                 }
                 break;
             case NON_BINARY:
-                rate = rate.add(THREE);
+                rate = rate.add(THREE_PERCENT);
                 break;
         }
         return rate;
@@ -223,9 +233,9 @@ public class ScoringServiceImpl implements ScoringService {
         for (int i = 0; i < term; i++) {
             LocalDate nextPaymentDate = LocalDate.now().plusMonths(i + 1);
             BigDecimal nextInterestPayment = remainingDebt
-                    .multiply(rate).divide(HUNDRED, SCALE)
+                    .multiply(rate).divide(HUNDRED_PERCENT, PRECISION)
                     .multiply(BigDecimal.valueOf(nextPaymentDate.lengthOfMonth()))
-                    .divide(BigDecimal.valueOf(nextPaymentDate.lengthOfYear()), SCALE);
+                    .divide(BigDecimal.valueOf(nextPaymentDate.lengthOfYear()), PRECISION);
             BigDecimal nextDebtPayment = monthlyPayment.subtract(nextInterestPayment);
             remainingDebt = remainingDebt.subtract(nextDebtPayment);
             paymentSchedule.add(
@@ -258,8 +268,8 @@ public class ScoringServiceImpl implements ScoringService {
                 .orElseThrow();
 
         return totalPayment
-                .divide(amount, SCALE)
+                .divide(amount, PRECISION)
                 .subtract(BigDecimal.ONE)
-                .multiply(HUNDRED);
+                .multiply(HUNDRED_PERCENT);
     }
 }

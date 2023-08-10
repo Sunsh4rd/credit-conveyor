@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -33,14 +32,12 @@ public class OfferServiceImpl implements OfferService {
      */
     @Override
     public List<LoanOfferDTO> createLoanOffers(LoanApplicationRequestDTO request) {
-        List<LoanOfferDTO> loanOffers = new ArrayList<>() {{
+        return new ArrayList<>() {{
             add(createLoanOffer(false, false, request));
             add(createLoanOffer(true, false, request));
             add(createLoanOffer(false, true, request));
             add(createLoanOffer(true, true, request));
         }};
-        loanOffers.sort(Comparator.comparing(LoanOfferDTO::getRate));
-        return loanOffers;
     }
 
     /**

@@ -19,7 +19,7 @@ public interface ScoringService {
             EmploymentDTO employmentData,
             BigDecimal amount,
             LocalDate birthDate
-    ) throws CreditDeniedException;
+    );
     BigDecimal calculateCreditRate(ScoringDataDTO scoringData);
     List<PaymentScheduleElement> calculatePaymentSchedule(
             BigDecimal amount,

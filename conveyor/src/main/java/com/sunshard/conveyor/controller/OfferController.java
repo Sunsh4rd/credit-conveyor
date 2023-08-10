@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -20,11 +21,10 @@ public class OfferController implements OfferAPI {
 
     @Override
     public ResponseEntity<List<LoanOfferDTO>> createLoanOffers(LoanApplicationRequestDTO request) {
-        logger.info("New application request was received:");
-        logger.info(request);
+        logger.info("New application request was received:\n{}", request);
         List<LoanOfferDTO> loanOffers = offerService.createLoanOffers(request);
-        logger.info("Possible loan offers were created:");
-        logger.info(loanOffers);
+        loanOffers.sort(Comparator.comparing(LoanOfferDTO::getRate, Comparator.reverseOrder()));
+        logger.info("Possible loan offers were created:\n{}", loanOffers);
         return ResponseEntity.ok(loanOffers);
     }
 }
