@@ -1,5 +1,7 @@
 package com.sunshard.conveyor.exception;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,8 @@ import java.util.Map;
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
+    private static final Logger logger = LogManager.getLogger(ControllerAdvisor.class.getName());
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex,
@@ -25,12 +29,13 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
             HttpStatus status,
             WebRequest request
     ) {
+        logger.error("Invalid data was passed");
         List<ObjectError> allErrors = ex.getAllErrors();
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDate.now());
         body.put("status", status.value());
         body.put("errors", allErrors);
-
+        logger.error("Causing errors: {}", allErrors);
         return ResponseEntity.badRequest().body(body);
     }
 
@@ -38,6 +43,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleCreditDeniedException(
             CreditDeniedException ex
     ) {
+        logger.error("Credit was denied due to: {}", ex.getMessage());
         Map<String, Object> body = new HashMap<>();
         body.put("message", ex.getMessage());
         body.put("timestamp", LocalDate.now());

@@ -1,12 +1,13 @@
 package com.sunshard.conveyor.service.impl;
 
-import com.sunshard.conveyor.exception.CreditDeniedException;
 import com.sunshard.conveyor.model.CreditDTO;
 import com.sunshard.conveyor.model.PaymentScheduleElement;
 import com.sunshard.conveyor.model.ScoringDataDTO;
 import com.sunshard.conveyor.service.CalculationService;
 import com.sunshard.conveyor.service.ScoringService;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ import java.util.List;
 public class CalculationServiceImpl implements CalculationService {
 
     private final ScoringService scoringService;
+    private static final Logger logger = LogManager.getLogger(CalculationServiceImpl.class.getName());
 
     /**
      *
@@ -35,23 +37,30 @@ public class CalculationServiceImpl implements CalculationService {
                 scoringData.getBirthDate()
         );
 
-
+        logger.info("Calculating credit rate:");
         BigDecimal rate = scoringService.calculateCreditRate(scoringData);
+        logger.info("Calculated credit rate: {}", rate);
 
+        logger.info("Calculating credit monthly payment:");
         BigDecimal monthlyPayment = scoringService.calculateMonthlyPayment(
                 scoringService.calculateMonthlyRate(rate),
                 scoringData.getAmount(),
                 scoringData.getTerm()
         );
+        logger.info("Calculated credit monthly payment: {}", monthlyPayment);
 
+        logger.info("Calculating credit payment schedule:");
         List<PaymentScheduleElement> paymentSchedule = scoringService.calculatePaymentSchedule(
                 scoringData.getAmount(),
                 scoringData.getTerm(),
                 rate,
                 monthlyPayment
         );
+        logger.info("Calculated credit payment schedule: {}", paymentSchedule);
 
+        logger.info("Calculating credit psk:");
         BigDecimal psk = scoringService.calculatePsk(paymentSchedule, scoringData.getAmount());
+        logger.info("Calculated credit psk: {}", psk);
 
         return CreditDTO.builder()
                 .amount(scoringData.getAmount())

@@ -5,6 +5,8 @@ import com.sunshard.conveyor.model.LoanOfferDTO;
 import com.sunshard.conveyor.service.OfferService;
 import com.sunshard.conveyor.service.ScoringService;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,12 +23,7 @@ import java.util.List;
 public class OfferServiceImpl implements OfferService {
 
     private final ScoringService scoringService;
-
-//    private final OfferRateCalculationService offerRateCalculationService;
-//    private final TotalAmountCalculationService totalAmountCalculationService;
-//    private final MonthlyPaymentCalculationService monthlyPaymentCalculationService;
-//    private final MonthlyRateCalculationService monthlyRateCalculationService;
-
+    private static final Logger logger = LogManager.getLogger(OfferServiceImpl.class.getName());
     /**
      *
      * @param request
@@ -50,18 +47,24 @@ public class OfferServiceImpl implements OfferService {
             Boolean isSalaryClient,
             LoanApplicationRequestDTO request
     ) {
+        logger.info("Calculating rate for loan offer:");
         BigDecimal rate = scoringService.calculateRate(isInsuranceEnabled, isSalaryClient);
+        logger.info("Calculated rate is {}", rate);
 
+        logger.info("Calculating monthly payment for loan offer:");
         BigDecimal monthlyPayment = scoringService.calculateMonthlyPayment(
                 scoringService.calculateMonthlyRate(rate),
                 scoringService.calculateLoanAmountBasedOnInsuranceStatus(request.getAmount(), isInsuranceEnabled),
                 request.getTerm()
         );
+        logger.info("Calculated monthly payment is {}", monthlyPayment);
 
+        logger.info("Calculating total amount for loan offer:");
         BigDecimal totalAmount = scoringService.calculateTotalAmount(
                 monthlyPayment,
                 request.getTerm()
         );
+        logger.info("Calculated total amount is {}", totalAmount);
 
         return LoanOfferDTO.builder()
                 .requestedAmount(request.getAmount())
