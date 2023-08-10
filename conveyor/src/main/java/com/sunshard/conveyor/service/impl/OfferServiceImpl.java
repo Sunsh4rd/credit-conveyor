@@ -15,21 +15,22 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Creates possible loan offers based on received loan application request
+ * Service for creating possible <i>loan offers</i> based on received <i>loan application request</i>
  */
-
 @Service
 @RequiredArgsConstructor
 public class OfferServiceImpl implements OfferService {
 
     private final ScoringService scoringService;
     private static final Logger logger = LogManager.getLogger(OfferServiceImpl.class.getName());
-    /**
-     *
-     * @param request
-     * @return
-     */
 
+    /**
+     * Create a list of <i>loan offers</i> based on various  values of <i>isInsuranceEnabled</i> and <i>isSalaryClient</i>
+     * @param request loan application request
+     * @return list of possible loan offers
+     * @see LoanApplicationRequestDTO
+     * @see LoanOfferDTO
+     */
     @Override
     public List<LoanOfferDTO> createLoanOffers(LoanApplicationRequestDTO request) {
         List<LoanOfferDTO> loanOffers = new ArrayList<>() {{
@@ -42,6 +43,15 @@ public class OfferServiceImpl implements OfferService {
         return loanOffers;
     }
 
+    /**
+     * Create specific <i>loan offer</i> based on <i>isInsuranceEnabled</i> and <i>isSalaryClient</i>
+     * @param isInsuranceEnabled specifies if insurance is enabled for <i>loan offer</i>
+     * @param isSalaryClient specifies if loaner is a salary client
+     * @param request loan application request
+     * @return specific <i>loan offer</i> based on <i>isInsuranceEnabled</i> and <i>isSalaryClient</i>
+     * @see LoanApplicationRequestDTO
+     * @see LoanOfferDTO
+     */
     private LoanOfferDTO createLoanOffer(
             Boolean isInsuranceEnabled,
             Boolean isSalaryClient,

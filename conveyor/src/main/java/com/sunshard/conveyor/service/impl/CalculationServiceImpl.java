@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- *
+ * Service for calculating <i>credit data</i> based on received <i>scoring data</i>
  */
 @Service
 @RequiredArgsConstructor
@@ -24,9 +24,11 @@ public class CalculationServiceImpl implements CalculationService {
     private static final Logger logger = LogManager.getLogger(CalculationServiceImpl.class.getName());
 
     /**
-     *
-     * @param scoringData
-     * @return CreditDTO
+     * Returns calculated <i>credit data</i> based on <i>scoring details</i>
+     * @param scoringData scoring data for credit calculation
+     * @return calculated credit data
+     * @see ScoringDataDTO
+     * @see CreditDTO
      */
     @Override
     public CreditDTO calculateCreditData(ScoringDataDTO scoringData) {
