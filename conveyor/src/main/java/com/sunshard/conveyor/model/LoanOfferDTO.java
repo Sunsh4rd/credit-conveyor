@@ -15,50 +15,58 @@ import java.math.BigDecimal;
 @Schema(description = "Possible loan offer")
 public class LoanOfferDTO {
 
-    @Schema(type = "integer",
+    @Schema(
+            type = "integer",
             format = "int64",
             example = "1",
             description = "number of the possible offer"
     )
     private Long applicationId;
 
-    @Schema(type = "number",
+    @Schema(
+            type = "number",
             example = "300000",
             description = "required loan amount"
     )
     private BigDecimal requestedAmount;
 
-    @Schema(type = "number",
+    @Schema(
+            type = "number",
             example = "448000",
             description = "total loan amount"
     )
     private BigDecimal totalAmount;
 
-    @Schema(type = "integer",
+    @Schema(
+            type = "integer",
             example = "18",
             description = "term of your loan"
     )
     private Integer term;
 
-    @Schema(type = "number",
+    @Schema(
+            type = "number",
             example = "18000",
             description = "monthly payment amount"
     )
     private BigDecimal monthlyPayment;
 
-    @Schema(type = "number",
+    @Schema(
+            type = "number",
             example = "11",
             description = "loan rate"
     )
     private BigDecimal rate;
 
-    @Schema(type = "boolean",
+    @Schema(
+            type = "boolean",
             example = "true",
             description = "shows whether insurance is enabled"
     )
     private Boolean isInsuranceEnabled;
 
-    @Schema(type = "boolean",
+    @Schema(
+            type = "boolean",
             example = "true",
             description = "shows whether loaner is a salary client"
     )

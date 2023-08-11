@@ -19,76 +19,81 @@ import java.time.LocalDate;
 public class LoanApplicationRequestDTO {
 
     @Min(10000)
-    @Schema(type = "number",
+    @Schema(
+            type = "number",
             example = "300000",
             description = "amount of your loan"
     )
     private BigDecimal amount;
 
     @Min(6)
-    @Schema(type = "integer",
+    @Schema(
+            type = "integer",
             example = "18",
             description = "term of your loan"
     )
     private Integer term;
 
-    @NotNull
     @NotBlank
     @Size(min = 2, max = 30)
-    @Schema(type = "string",
+    @Schema(
+            type = "string",
             example = "Moses",
             description = "your first name"
     )
     private String firstName;
 
-    @NotNull
     @NotBlank
     @Size(min = 2, max = 30)
-    @Schema(type = "string",
+    @Schema(
+            type = "string",
             example = "Jackson",
             description = "your last name"
     )
     private String lastName;
 
     @Size(min = 2, max = 30)
-    @Schema(type = "string",
+    @Schema(
+            type = "string",
             example = "Fitzgerald",
             description = "your middle name"
     )
     private String middleName;
 
     @NotNull
-    @Schema(type = "string",
-            pattern = "[\\w\\.]{2,50}@[\\w\\.]{2,20}",
+    @Schema(
+            type = "string",
             example = "your@mail.com",
             description = "your email"
     )
+    @Pattern(regexp = "^[\\w.]{2,50}@[\\w.]{2,20}$")
     private String email;
 
     @NotNull
     @BirthDate
-    @Schema(type = "string",
+    @Schema(
+            type = "string",
             format = "date",
             example = "2004-08-04",
             description = "your birthdate"
     )
     private LocalDate birthdate;
 
-    @NotNull
-    @Pattern(regexp = "^[0-9]{4}$")
-    @Schema(type = "string",
-            pattern = "^[0-9]{4}$",
+    @NotBlank
+    @Schema(
+            type = "string",
             example = "6020",
             description = "your passport series"
     )
+    @Pattern(regexp = "^[0-9]{4}$")
     private String passportSeries;
 
-    @NotNull
-    @Pattern(regexp = "^[0-9]{6}$")
-    @Schema(type = "string",
-            pattern = "^[0-9]{6}$",
+    @NotBlank
+    @Schema(
+            type = "string",
             example = "425513",
             description = "your passport number"
     )
+    @Pattern(regexp = "^[0-9]{6}$")
     private String passportNumber;
 }

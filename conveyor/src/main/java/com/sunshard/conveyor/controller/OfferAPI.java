@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -23,8 +22,7 @@ public interface OfferAPI {
             },
             description = "Provide possible loan offers"
     )
-    @ResponseBody
     ResponseEntity<List<LoanOfferDTO>> createLoanOffers(
-            @Valid @RequestBody LoanApplicationRequestDTO loanApplicationRequest
+            @Valid @RequestBody LoanApplicationRequestDTO request
     );
 }
