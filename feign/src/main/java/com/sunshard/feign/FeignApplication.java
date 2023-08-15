@@ -1,4 +1,4 @@
-package com.sunshard.deal;
+package com.sunshard.feign;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableFeignClients
-public class DealApplication {
+public class FeignApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DealApplication.class, args);
+		SpringApplication.run(FeignApplication.class, args);
 	}
 
 }

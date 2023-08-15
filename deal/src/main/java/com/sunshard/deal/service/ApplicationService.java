@@ -14,6 +14,6 @@ public class ApplicationService {
     private final ClientRepository clientRepository;
 
     public List<LoanOfferDTO> createLoanOffers(LoanApplicationRequestDTO request) {
-
+        return null;
     }
 }
