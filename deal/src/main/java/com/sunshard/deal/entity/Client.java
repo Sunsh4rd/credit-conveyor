@@ -4,18 +4,21 @@ import com.sunshard.deal.entity.json.Employment;
 import com.sunshard.deal.entity.json.Passport;
 import com.sunshard.deal.model.enums.Gender;
 import com.sunshard.deal.model.enums.MaritalStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import lombok.*;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class Client {
 
     @Id

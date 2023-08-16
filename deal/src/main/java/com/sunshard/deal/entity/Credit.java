@@ -2,19 +2,23 @@ package com.sunshard.deal.entity;
 
 import com.sunshard.deal.model.PaymentScheduleElement;
 import com.sunshard.deal.model.enums.CreditStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import lombok.*;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class Credit {
 
     @Id

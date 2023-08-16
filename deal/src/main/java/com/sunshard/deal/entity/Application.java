@@ -3,11 +3,11 @@ package com.sunshard.deal.entity;
 import com.sunshard.deal.model.ApplicationStatusHistoryDTO;
 import com.sunshard.deal.model.LoanOfferDTO;
 import com.sunshard.deal.model.enums.ApplicationStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import lombok.*;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,6 +18,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
+@TypeDefs({@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)})
 public class Application {
 
     @Id

@@ -41,4 +41,14 @@ public class ApplicationService {
                 .build()
         );
     }
+
+    public Application getApplicationById(Long id) {
+        return applicationRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException(String.format("No application with id %d", id))
+        );
+    }
+
+    public Application saveApplication(Application application) {
+        return applicationRepository.save(application);
+    }
 }
