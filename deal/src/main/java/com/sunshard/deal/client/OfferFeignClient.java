@@ -11,5 +11,5 @@ import java.util.List;
 @FeignClient(value = "demoFeign", url = "http://localhost:8080")
 public interface OfferFeignClient {
     @PostMapping("/conveyor/offers")
-    ResponseEntity<List<LoanOfferDTO>> createLoanOffers(LoanApplicationRequestDTO request);
+    List<LoanOfferDTO> createLoanOffers(LoanApplicationRequestDTO request);
 }

@@ -5,6 +5,7 @@ import com.sunshard.deal.model.LoanOfferDTO;
 import com.sunshard.deal.model.enums.ApplicationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
@@ -16,6 +17,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class Application {
 
     @Id
@@ -40,7 +42,7 @@ public class Application {
     private LoanOfferDTO appliedOffer;
 
     private LocalDateTime signDate;
-    private String sesCode; //?
+    private String sesCode;
 
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")

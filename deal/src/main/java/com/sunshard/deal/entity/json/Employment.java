@@ -2,11 +2,13 @@ package com.sunshard.deal.entity.json;
 
 import com.sunshard.deal.model.enums.EmploymentPosition;
 import com.sunshard.deal.model.enums.EmploymentStatus;
+import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Data
+@Builder
 public class Employment {
     private EmploymentStatus status;
     private String employerINN;

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Tag(name = "Deal", description = "Deal methods")
@@ -22,6 +23,6 @@ public interface ApplicationAPI {
             description = "Provide possible loan offers"
     )
     ResponseEntity<List<LoanOfferDTO>> createLoanOffers(
-            @RequestBody LoanApplicationRequestDTO request
+            @Valid @RequestBody LoanApplicationRequestDTO request
     );
 }

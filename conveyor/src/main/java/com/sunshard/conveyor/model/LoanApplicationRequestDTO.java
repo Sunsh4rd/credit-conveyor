@@ -77,7 +77,7 @@ public class LoanApplicationRequestDTO {
             example = "2004-08-04",
             description = "your birthdate"
     )
-    private LocalDate birthdate;
+    private LocalDate birthDate;
 
     @NotBlank
     @Schema(
