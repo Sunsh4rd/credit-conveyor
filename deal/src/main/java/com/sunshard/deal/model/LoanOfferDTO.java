@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
@@ -14,7 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 @Schema(description = "Possible loan offer")
-public class LoanOfferDTO implements Serializable {
+public class LoanOfferDTO {
 
     @Schema(
             type = "integer",

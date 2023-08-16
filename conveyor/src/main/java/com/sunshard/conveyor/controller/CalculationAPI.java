@@ -15,7 +15,7 @@ import javax.validation.Valid;
 public interface CalculationAPI {
     @PostMapping("/conveyor/calculation")
     @Operation(
-            summary = "make calculations",
+            summary = "Calculate credit data based on scoring data",
             responses = {@ApiResponse(responseCode = "200", description = "Successfully created"),
                     @ApiResponse(responseCode = "400", description = "You can not apply for the loan")},
             description = "Calculate credit data"

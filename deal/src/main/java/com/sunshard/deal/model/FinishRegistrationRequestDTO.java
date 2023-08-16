@@ -5,7 +5,6 @@ import com.sunshard.deal.model.enums.MaritalStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 
 import java.time.LocalDate;
 

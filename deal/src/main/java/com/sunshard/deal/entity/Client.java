@@ -1,7 +1,7 @@
 package com.sunshard.deal.entity;
 
-import com.sunshard.deal.entity.json.Employment;
 import com.sunshard.deal.entity.json.Passport;
+import com.sunshard.deal.model.EmploymentDTO;
 import com.sunshard.deal.model.enums.Gender;
 import com.sunshard.deal.model.enums.MaritalStatus;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
@@ -45,5 +45,5 @@ public class Client {
 
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
-    private Employment employment;
+    private EmploymentDTO employment;
 }

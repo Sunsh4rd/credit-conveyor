@@ -1,0 +1,15 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:postgresql://ep-weathered-math-909876.us-east-2.aws.neon.tech/credit_conveyor
+    username: ssoslickk
+    password: H94xCKgdQjuS
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+conveyor-address: localhost:8080
