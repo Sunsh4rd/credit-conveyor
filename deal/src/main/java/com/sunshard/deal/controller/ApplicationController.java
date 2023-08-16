@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class ApplicationController implements ApplicationAPI {
-    
+
     private final OfferFeignClient offerFeignClient;
     private final ApplicationService applicationService;
 
