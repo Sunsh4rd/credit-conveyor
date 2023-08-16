@@ -2,6 +2,7 @@ package com.sunshard.deal.service;
 
 import com.sunshard.deal.entity.Application;
 import com.sunshard.deal.entity.Client;
+import com.sunshard.deal.entity.Credit;
 import com.sunshard.deal.mapper.ClientMapper;
 import com.sunshard.deal.model.ApplicationStatusHistoryDTO;
 import com.sunshard.deal.model.LoanApplicationRequestDTO;
@@ -9,6 +10,7 @@ import com.sunshard.deal.model.enums.ApplicationStatus;
 import com.sunshard.deal.model.enums.ChangeType;
 import com.sunshard.deal.repository.ApplicationRepository;
 import com.sunshard.deal.repository.ClientRepository;
+import com.sunshard.deal.repository.CreditRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ import java.util.List;
 public class ApplicationService {
     private final ClientRepository clientRepository;
     private final ApplicationRepository applicationRepository;
+    private final CreditRepository creditRepository;
 
     public Client addClient(LoanApplicationRequestDTO request) {
         Client client = ClientMapper.INSTANCE.dtoToEntity(request);
@@ -50,5 +53,9 @@ public class ApplicationService {
 
     public Application saveApplication(Application application) {
         return applicationRepository.save(application);
+    }
+
+    public Credit saveCreditData(Credit credit) {
+        return creditRepository.save(credit);
     }
 }

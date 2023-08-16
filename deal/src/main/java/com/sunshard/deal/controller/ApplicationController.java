@@ -1,6 +1,6 @@
 package com.sunshard.deal.controller;
 
-import com.sunshard.deal.client.OfferFeignClient;
+import com.sunshard.deal.client.CreditConveyorFeignClient;
 import com.sunshard.deal.entity.Application;
 import com.sunshard.deal.entity.Client;
 import com.sunshard.deal.model.LoanApplicationRequestDTO;
@@ -16,13 +16,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ApplicationController implements ApplicationAPI {
 
-    private final OfferFeignClient offerFeignClient;
+    private final CreditConveyorFeignClient creditConveyorFeignClient;
     private final ApplicationService applicationService;
 
     @Override
     public ResponseEntity<List<LoanOfferDTO>> createLoanOffers(LoanApplicationRequestDTO request) {
         Client client = applicationService.addClient(request);
-        List<LoanOfferDTO> loanOffers = offerFeignClient.createLoanOffers(request);
+        List<LoanOfferDTO> loanOffers = creditConveyorFeignClient.createLoanOffers(request);
         Application application = applicationService.createApplicationForClient(client);
         loanOffers.forEach(offer -> offer.setApplicationId(application.getApplicationId()));
         return ResponseEntity.ok(loanOffers);
