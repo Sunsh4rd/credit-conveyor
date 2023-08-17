@@ -5,15 +5,17 @@ import com.sunshard.deal.model.LoanApplicationRequestDTO;
 import com.sunshard.deal.model.LoanOfferDTO;
 import com.sunshard.deal.model.ScoringDataDTO;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
 @FeignClient(value = "demoFeign", url = "http://localhost:8080")
 public interface CreditConveyorFeignClient {
     @PostMapping("/conveyor/offers")
-    List<LoanOfferDTO> createLoanOffers(LoanApplicationRequestDTO request);
+    ResponseEntity<List<LoanOfferDTO>> createLoanOffers(@RequestBody LoanApplicationRequestDTO request);
 
     @PostMapping("/conveyor/calculation")
-    CreditDTO calculateCreditData(ScoringDataDTO scoringData);
+    ResponseEntity<CreditDTO> calculateCreditData(@RequestBody ScoringDataDTO scoringData);
 }

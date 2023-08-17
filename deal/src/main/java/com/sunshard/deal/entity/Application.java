@@ -7,7 +7,6 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.*;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@TypeDefs({@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)})
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class Application {
 
     @Id
