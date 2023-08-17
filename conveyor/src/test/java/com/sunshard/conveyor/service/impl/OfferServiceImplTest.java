@@ -28,7 +28,7 @@ class OfferServiceImplTest {
                 .lastName("last")
                 .middleName("middle")
                 .email("your@mail.com")
-                .birthdate(LocalDate.parse("2000-01-01"))
+                .birthDate(LocalDate.parse("2000-01-01"))
                 .passportSeries("1231")
                 .passportNumber("123456")
                 .build();

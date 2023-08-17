@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContextException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -53,19 +54,23 @@ public class DealServiceImpl implements DealService {
      * @see LoanApplicationRequestDTO
      * @see LoanOfferDTO
      */
+
+    @Override
     @Transactional
     public List<LoanOfferDTO> createLoanOffers(LoanApplicationRequestDTO request) {
         Client client = addClient(request);
         Application application = createApplicationForClient(client);
-        List<LoanOfferDTO> loanOffers = creditConveyorFeignClient.createLoanOffers(request).getBody();
+        ResponseEntity<List<LoanOfferDTO>> loanOffers = creditConveyorFeignClient.createLoanOffers(request);
+        List<LoanOfferDTO> resultLoanOffers;
         if (loanOffers != null) {
-            loanOffers.forEach(offer -> offer.setApplicationId(application.getApplicationId()));
+            resultLoanOffers = loanOffers.getBody();
+            resultLoanOffers.forEach(offer -> offer.setApplicationId(application.getApplicationId()));
             logger.info("Loan offers related to the application: {}", application.getApplicationId());
         } else {
             logger.error("Could not get loan offers");
             throw new LoanOffersNotCreatedException("No loan offers were supplied");
         }
-        return loanOffers;
+        return resultLoanOffers;
     }
 
     /**
@@ -73,6 +78,8 @@ public class DealServiceImpl implements DealService {
      * @param loanOffer specified <i>loan offer</i>
      * @see LoanOfferDTO
      */
+
+    @Override
     @Transactional
     public void applyLoanOffer(LoanOfferDTO loanOffer) {
         ApplicationDTO applicationDTO = applicationMapper.entityToDto(getApplicationById(
@@ -98,6 +105,8 @@ public class DealServiceImpl implements DealService {
      * @see Application
      * @see FinishRegistrationRequestDTO
      */
+
+    @Override
     @Transactional
     public void calculateCreditData(Long applicationId, FinishRegistrationRequestDTO finishRegistrationRequest) {
         Application application = getApplicationById(applicationId);
