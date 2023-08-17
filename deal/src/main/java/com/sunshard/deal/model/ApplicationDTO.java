@@ -47,8 +47,24 @@ public class ApplicationDTO {
             description = "creation date"
     )
     private LocalDateTime creationDate;
+
+    @Schema(description = "specified offer used in application")
     private LoanOfferDTO appliedOffer;
+
+    @Schema(
+            type = "string",
+            format = "date-time",
+            example = "2023-10-05",
+            description = "sign date"
+    )
     private LocalDateTime signDate;
+
+    @Schema(
+            type = "string",
+            description = "session code"
+    )
     private String sesCode;
+
+    @Schema(description = "application status history")
     private List<ApplicationStatusHistoryDTO> statusHistory;
 }
