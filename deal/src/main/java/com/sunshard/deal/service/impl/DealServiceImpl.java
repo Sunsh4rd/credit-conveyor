@@ -19,6 +19,8 @@ import com.sunshard.deal.repository.ClientRepository;
 import com.sunshard.deal.repository.CreditRepository;
 import com.sunshard.deal.service.DealService;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +44,7 @@ public class DealServiceImpl implements DealService {
     private final ApplicationMapper applicationMapper;
     private final ScoringDataMapper scoringDataMapper;
     private final CreditConveyorFeignClient creditConveyorFeignClient;
+    private final Logger logger = LogManager.getLogger(DealServiceImpl.class.getName());
 
     /**
      * Calls the <i>feign client</i> to receive <i>loan offers</i> from <i>credit conveyor</i>
@@ -53,11 +56,13 @@ public class DealServiceImpl implements DealService {
     @Transactional
     public List<LoanOfferDTO> createLoanOffers(LoanApplicationRequestDTO request) {
         Client client = addClient(request);
-        List<LoanOfferDTO> loanOffers = creditConveyorFeignClient.createLoanOffers(request).getBody();
         Application application = createApplicationForClient(client);
+        List<LoanOfferDTO> loanOffers = creditConveyorFeignClient.createLoanOffers(request).getBody();
         if (loanOffers != null) {
             loanOffers.forEach(offer -> offer.setApplicationId(application.getApplicationId()));
+            logger.info("Loan offers related to the application: {}", application.getApplicationId());
         } else {
+            logger.error("Could not get loan offers");
             throw new LoanOffersNotCreatedException("No loan offers were supplied");
         }
         return loanOffers;
@@ -113,7 +118,9 @@ public class DealServiceImpl implements DealService {
      * @see LoanApplicationRequestDTO
      */
     private Client addClient(LoanApplicationRequestDTO request) {
+        logger.info("Creating client for request:\n{}", request);
         Client client = clientMapper.dtoToEntity(request);
+        logger.info("Client created");
         return clientRepository.save(client);
     }
 
@@ -125,7 +132,8 @@ public class DealServiceImpl implements DealService {
      * @see Client
      */
     private Application createApplicationForClient(Client client) {
-        return applicationRepository.save(Application.builder()
+        logger.info("Creating application for client");
+        Application application = Application.builder()
                 .status(ApplicationStatus.PREAPPROVAL)
                 .creationDate(LocalDateTime.now())
                 .client(client)
@@ -136,8 +144,9 @@ public class DealServiceImpl implements DealService {
                                 .changeType(ChangeType.AUTOMATIC)
                                 .build()
                 ))
-                .build()
-        );
+                .build();
+        logger.info("Application created:\n{}", applicationMapper.entityToDto(application));
+        return applicationRepository.save(application);
     }
 
     /**
@@ -148,9 +157,13 @@ public class DealServiceImpl implements DealService {
      * @see Application
      */
     private Application getApplicationById(Long id) {
-        return applicationRepository.findById(id).orElseThrow(
-                () -> new ApplicationNotFoundException(id)
-        );
+        logger.info("Searching for application with id: {}", id);
+        if (applicationRepository.findById(id).isEmpty()) {
+            logger.error("Could not find application with id: {}", id);
+            throw new ApplicationNotFoundException(id);
+        } else {
+            return applicationRepository.findById(id).get();
+        }
     }
 
     /**
@@ -159,7 +172,9 @@ public class DealServiceImpl implements DealService {
      * @see Application
      */
     private void saveApplication(Application application) {
+        logger.info("Saving application to the database:\n{}", applicationMapper.entityToDto(application));
         applicationRepository.save(application);
+        logger.info("Application saved");
     }
 
     /**
@@ -168,6 +183,8 @@ public class DealServiceImpl implements DealService {
      * @see Credit
      */
     private void saveCreditData(Credit credit) {
+        logger.info("Saving credit to the database:\n{}", creditMapper.entityToDto(credit));
         creditRepository.save(credit);
+        logger.info("Credit saved");
     }
 }
