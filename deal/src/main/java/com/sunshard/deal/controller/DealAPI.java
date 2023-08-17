@@ -1,7 +1,5 @@
 package com.sunshard.deal.controller;
 
-import com.sunshard.deal.entity.Application;
-import com.sunshard.deal.model.CreditDTO;
 import com.sunshard.deal.model.FinishRegistrationRequestDTO;
 import com.sunshard.deal.model.LoanApplicationRequestDTO;
 import com.sunshard.deal.model.LoanOfferDTO;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Tag(name = "Deal", description = "Deal methods")

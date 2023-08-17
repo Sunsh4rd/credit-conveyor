@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
+@Table(name = "credit")
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 @Builder
 @AllArgsConstructor

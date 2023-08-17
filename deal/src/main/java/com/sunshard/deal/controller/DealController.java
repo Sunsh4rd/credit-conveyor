@@ -1,21 +1,13 @@
 package com.sunshard.deal.controller;
 
-import com.sunshard.deal.client.CreditConveyorFeignClient;
-import com.sunshard.deal.entity.Application;
-import com.sunshard.deal.entity.Client;
-import com.sunshard.deal.entity.Credit;
-import com.sunshard.deal.mapper.ApplicationMapper;
-import com.sunshard.deal.mapper.CreditMapper;
-import com.sunshard.deal.model.*;
-import com.sunshard.deal.model.enums.ApplicationStatus;
-import com.sunshard.deal.model.enums.ChangeType;
-import com.sunshard.deal.model.enums.CreditStatus;
+import com.sunshard.deal.model.FinishRegistrationRequestDTO;
+import com.sunshard.deal.model.LoanApplicationRequestDTO;
+import com.sunshard.deal.model.LoanOfferDTO;
 import com.sunshard.deal.service.DealService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController

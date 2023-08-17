@@ -7,6 +7,7 @@ import com.sunshard.deal.entity.Credit;
 import com.sunshard.deal.mapper.ApplicationMapper;
 import com.sunshard.deal.mapper.ClientMapper;
 import com.sunshard.deal.mapper.CreditMapper;
+import com.sunshard.deal.mapper.ScoringDataMapper;
 import com.sunshard.deal.model.*;
 import com.sunshard.deal.model.enums.ApplicationStatus;
 import com.sunshard.deal.model.enums.ChangeType;
@@ -15,8 +16,6 @@ import com.sunshard.deal.repository.ApplicationRepository;
 import com.sunshard.deal.repository.ClientRepository;
 import com.sunshard.deal.repository.CreditRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -37,6 +36,7 @@ public class DealService {
     private final ClientMapper clientMapper;
     private final CreditMapper creditMapper;
     private final ApplicationMapper applicationMapper;
+    private final ScoringDataMapper scoringDataMapper;
     private final CreditConveyorFeignClient creditConveyorFeignClient;
 
     /**
@@ -105,6 +105,13 @@ public class DealService {
         creditRepository.save(credit);
     }
 
+    /**
+     * Calls the <i>feign client</i> to receive <i>loan offers</i> from <i>credit conveyor</i>
+     * @param request loan request
+     * @return possible <i>loan offers</i>
+     * @see LoanApplicationRequestDTO
+     * @see LoanOfferDTO
+     */
     @Transactional
     public List<LoanOfferDTO> createLoanOffers(LoanApplicationRequestDTO request) {
         Client client = addClient(request);
@@ -114,6 +121,11 @@ public class DealService {
         return loanOffers;
     }
 
+    /**
+     * Applies the specified <i>loan offer</i> and saves it to the database
+     * @param loanOffer specified <i>loan offer</i>
+     * @see LoanOfferDTO
+     */
     @Transactional
     public void applyLoanOffer(LoanOfferDTO loanOffer) {
         ApplicationDTO applicationDTO = applicationMapper.entityToDto(getApplicationById(
@@ -132,29 +144,17 @@ public class DealService {
         saveApplication(applicationMapper.dtoToEntity(applicationDTO));
     }
 
+    /**
+     * Calls the <i>feign client</i> to receive calculated <i>credit data</i> based on <i>application</i> and <i>user data</i>
+     * @param applicationId <i>application</i> identifier
+     * @param finishRegistrationRequest <i>user data</i>
+     * @see Application
+     * @see FinishRegistrationRequestDTO
+     */
     @Transactional
     public void calculateCreditData(Long applicationId, FinishRegistrationRequestDTO finishRegistrationRequest) {
         Application application = getApplicationById(applicationId);
-        Client client = application.getClient();
-        ScoringDataDTO scoringData = ScoringDataDTO.builder()
-                .account(finishRegistrationRequest.getAccount())
-                .gender(finishRegistrationRequest.getGender())
-                .dependentAmount(finishRegistrationRequest.getDependentAmount())
-                .employment(finishRegistrationRequest.getEmployment())
-                .birthDate(client.getBirthDate())
-                .firstName(client.getFirstName())
-                .lastName(client.getLastName())
-                .middleName(client.getMiddleName())
-                .maritalStatus(finishRegistrationRequest.getMaritalStatus())
-                .term(application.getAppliedOffer().getTerm())
-                .amount(application.getAppliedOffer().getRequestedAmount())
-                .isInsuranceEnabled(application.getAppliedOffer().getIsInsuranceEnabled())
-                .isSalaryClient(application.getAppliedOffer().getIsSalaryClient())
-                .passportNumber(client.getPassport().getNumber())
-                .passportSeries(client.getPassport().getSeries())
-                .passportIssueBranch(finishRegistrationRequest.getPassportIssueBranch())
-                .passportIssueDate(finishRegistrationRequest.getPassportIssueDate())
-                .build();
+        ScoringDataDTO scoringData = scoringDataMapper.from(application, finishRegistrationRequest);
         CreditDTO creditDTO = creditConveyorFeignClient.calculateCreditData(scoringData).getBody();
         Credit credit = creditMapper.dtoToEntity(creditDTO);
         credit.setCreditStatus(CreditStatus.CALCULATED);
