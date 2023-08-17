@@ -28,7 +28,6 @@ public class EmploymentDTO {
             example = "012345678987",
             description = "loaner's employer INN"
     )
-    @Pattern(regexp = "^[0-9]{12}$")
     private String employerINN;
 
     @Schema(

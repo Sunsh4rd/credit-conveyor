@@ -2,13 +2,11 @@ package com.sunshard.deal.model;
 
 import com.sunshard.deal.model.enums.Gender;
 import com.sunshard.deal.model.enums.MaritalStatus;
-import com.sunshard.deal.validator.BirthDate;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -18,7 +16,6 @@ import java.time.LocalDate;
 @Schema(description = "Loaner's scoring data")
 public class ScoringDataDTO {
 
-    @Min(10000)
     @Schema(
             type = "number",
             example = "300000",
@@ -26,7 +23,6 @@ public class ScoringDataDTO {
     )
     private BigDecimal amount;
 
-    @Min(6)
     @Schema(
             type = "integer",
             example = "18",
@@ -34,8 +30,6 @@ public class ScoringDataDTO {
     )
     private Integer term;
 
-    @NotBlank
-    @Size(min = 2, max = 30)
     @Schema(
             type = "string",
             example = "Moses",
@@ -43,8 +37,6 @@ public class ScoringDataDTO {
     )
     private String firstName;
 
-    @NotBlank
-    @Size(min = 2, max = 30)
     @Schema(
             type = "string",
             example = "Jackson",
@@ -52,7 +44,6 @@ public class ScoringDataDTO {
     )
     private String lastName;
 
-    @Size(min = 2, max = 30)
     @Schema(
             type = "string",
             example = "Fitzgerald",
@@ -67,8 +58,6 @@ public class ScoringDataDTO {
     )
     private Gender gender;
 
-    @NotNull
-    @BirthDate
     @Schema(
             type = "string",
             format = "date",
@@ -77,25 +66,20 @@ public class ScoringDataDTO {
     )
     private LocalDate birthDate;
 
-    @NotBlank
     @Schema(
             type = "string",
             example = "6020",
             description = "your passport series"
     )
-    @Pattern(regexp = "^[0-9]{4}$")
     private String passportSeries;
 
-    @NotBlank
     @Schema(
             type = "string",
             example = "425513",
             description = "your passport number"
     )
-    @Pattern(regexp = "^[0-9]{6}$")
     private String passportNumber;
 
-    @NotNull
     @Schema(
             type = "string",
             format = "date",

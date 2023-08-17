@@ -15,14 +15,12 @@ import java.util.List;
 @Schema(description = "Calculated credit data")
 public class CreditDTO {
 
-    @Min(10000)
     @Schema(type = "number",
             example = "300000",
             description = "amount of your loan"
     )
     private BigDecimal amount;
 
-    @Min(6)
     @Schema(type = "integer",
             example = "18",
             description = "term of your loan"
