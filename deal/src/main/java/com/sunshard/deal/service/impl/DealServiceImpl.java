@@ -4,6 +4,8 @@ import com.sunshard.deal.client.CreditConveyorFeignClient;
 import com.sunshard.deal.entity.Application;
 import com.sunshard.deal.entity.Client;
 import com.sunshard.deal.entity.Credit;
+import com.sunshard.deal.exception.ApplicationNotFoundException;
+import com.sunshard.deal.exception.LoanOffersNotCreatedException;
 import com.sunshard.deal.mapper.ApplicationMapper;
 import com.sunshard.deal.mapper.ClientMapper;
 import com.sunshard.deal.mapper.CreditMapper;
@@ -17,6 +19,7 @@ import com.sunshard.deal.repository.ClientRepository;
 import com.sunshard.deal.repository.CreditRepository;
 import com.sunshard.deal.service.DealService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationContextException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -52,7 +55,11 @@ public class DealServiceImpl implements DealService {
         Client client = addClient(request);
         List<LoanOfferDTO> loanOffers = creditConveyorFeignClient.createLoanOffers(request).getBody();
         Application application = createApplicationForClient(client);
-        loanOffers.forEach(offer -> offer.setApplicationId(application.getApplicationId()));
+        if (loanOffers != null) {
+            loanOffers.forEach(offer -> offer.setApplicationId(application.getApplicationId()));
+        } else {
+            throw new LoanOffersNotCreatedException("No loan offers were supplied");
+        }
         return loanOffers;
     }
 
@@ -142,7 +149,7 @@ public class DealServiceImpl implements DealService {
      */
     private Application getApplicationById(Long id) {
         return applicationRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException(String.format("No application with id %d", id))
+                () -> new ApplicationNotFoundException(id)
         );
     }
 
