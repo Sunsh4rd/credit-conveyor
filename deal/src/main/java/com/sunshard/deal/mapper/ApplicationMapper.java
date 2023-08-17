@@ -9,7 +9,7 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface ApplicationMapper {
 
-    ApplicationMapper INSTANCE = Mappers.getMapper(ApplicationMapper.class);
+//    ApplicationMapper INSTANCE = Mappers.getMapper(ApplicationMapper.class);
     Application dtoToEntity(ApplicationDTO applicationDTO);
 
 //    @Mapping(target = "applicationId", source = "application.applicationId")

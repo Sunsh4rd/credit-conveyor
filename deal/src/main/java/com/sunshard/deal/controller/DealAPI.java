@@ -36,7 +36,7 @@ public interface DealAPI {
             description = "Apply provided loan offer and save it"
     )
     @PutMapping("/deal/offer")
-    ResponseEntity<Application> applyLoanOffer(@RequestBody LoanOfferDTO loanOffer);
+    ResponseEntity<Void> applyLoanOffer(@RequestBody LoanOfferDTO loanOffer);
 
     @Operation(
             summary = "Calculate credit data",
@@ -45,7 +45,7 @@ public interface DealAPI {
             description = "Calculate credit data based on scoring data"
     )
     @PutMapping("/deal/calculate/{applicationId}")
-    ResponseEntity<CreditDTO> calculateCreditData(
+    ResponseEntity<Void> calculateCreditData(
             @PathVariable Long applicationId,
             @RequestBody FinishRegistrationRequestDTO finishRegistrationRequest
     );

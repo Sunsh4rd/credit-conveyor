@@ -8,7 +8,7 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface ClientMapper {
-    ClientMapper INSTANCE = Mappers.getMapper(ClientMapper.class);
+//    ClientMapper INSTANCE = Mappers.getMapper(ClientMapper.class);
 
 //    @Mapping(target = "firstName", source = "request.firstName")
 //    @Mapping(target = "lastName", source = "request.lastName")

@@ -8,7 +8,7 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface CreditMapper {
-    CreditMapper INSTANCE = Mappers.getMapper(CreditMapper.class);
+//    CreditMapper INSTANCE = Mappers.getMapper(CreditMapper.class);
 
     @Mapping(target = "insuranceEnabled", source = "creditDTO.isInsuranceEnabled")
     @Mapping(target = "salaryClient", source = "creditDTO.isSalaryClient")

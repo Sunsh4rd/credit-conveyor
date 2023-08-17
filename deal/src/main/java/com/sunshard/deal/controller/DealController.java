@@ -10,7 +10,7 @@ import com.sunshard.deal.model.*;
 import com.sunshard.deal.model.enums.ApplicationStatus;
 import com.sunshard.deal.model.enums.ChangeType;
 import com.sunshard.deal.model.enums.CreditStatus;
-import com.sunshard.deal.service.ApplicationService;
+import com.sunshard.deal.service.DealService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,68 +22,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DealController implements DealAPI {
 
-    private final CreditConveyorFeignClient creditConveyorFeignClient;
-    private final ApplicationService applicationService;
+    private final DealService dealService;
     @Override
     public ResponseEntity<List<LoanOfferDTO>> createLoanOffers(LoanApplicationRequestDTO request) {
-        Client client = applicationService.addClient(request);
-        List<LoanOfferDTO> loanOffers = creditConveyorFeignClient.createLoanOffers(request);
-        Application application = applicationService.createApplicationForClient(client);
-        loanOffers.forEach(offer -> offer.setApplicationId(application.getApplicationId()));
-        return ResponseEntity.ok(loanOffers);
+        return ResponseEntity.ok(dealService.createLoanOffers(request));
     }
 
     @Override
-    public ResponseEntity<Application> applyLoanOffer(LoanOfferDTO loanOffer) {
-        ApplicationDTO applicationDTO = ApplicationMapper.INSTANCE.entityToDto(applicationService.getApplicationById(
-                loanOffer.getApplicationId()
-        ));
-        applicationDTO.setStatus(ApplicationStatus.APPROVED);
-        List<ApplicationStatusHistoryDTO> statusHistory = applicationDTO.getStatusHistory();
-        statusHistory.add(ApplicationStatusHistoryDTO.builder()
-                .status(ApplicationStatus.APPROVED)
-                .time(LocalDateTime.now())
-                .changeType(ChangeType.AUTOMATIC)
-                .build()
-        );
-        applicationDTO.setStatusHistory(statusHistory);
-        applicationDTO.setAppliedOffer(loanOffer);
-        return ResponseEntity.ok(applicationService.saveApplication(
-                ApplicationMapper.INSTANCE.dtoToEntity(applicationDTO)
-        ));
+    public ResponseEntity<Void> applyLoanOffer(LoanOfferDTO loanOffer) {
+        dealService.applyLoanOffer(loanOffer);
+        return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<CreditDTO> calculateCreditData(
+    public ResponseEntity<Void> calculateCreditData(
             Long applicationId, FinishRegistrationRequestDTO finishRegistrationRequest
     ) {
-        Application application = applicationService.getApplicationById(applicationId);
-        Client client = application.getClient();
-        ScoringDataDTO scoringData = ScoringDataDTO.builder()
-                .account(finishRegistrationRequest.getAccount())
-                .gender(finishRegistrationRequest.getGender())
-                .dependentAmount(finishRegistrationRequest.getDependentAmount())
-                .employment(finishRegistrationRequest.getEmployment())
-                .birthDate(client.getBirthDate())
-                .firstName(client.getFirstName())
-                .lastName(client.getLastName())
-                .middleName(client.getMiddleName())
-                .maritalStatus(finishRegistrationRequest.getMaritalStatus())
-                .term(application.getAppliedOffer().getTerm())
-                .amount(application.getAppliedOffer().getRequestedAmount())
-                .isInsuranceEnabled(application.getAppliedOffer().getIsInsuranceEnabled())
-                .isSalaryClient(application.getAppliedOffer().getIsSalaryClient())
-                .passportNumber(client.getPassport().getNumber())
-                .passportSeries(client.getPassport().getSeries())
-                .passportIssueBranch(finishRegistrationRequest.getPassportIssueBranch())
-                .passportIssueDate(finishRegistrationRequest.getPassportIssueDate())
-                .build();
-        CreditDTO creditDTO = creditConveyorFeignClient.calculateCreditData(scoringData);
-        Credit credit = CreditMapper.INSTANCE.dtoToEntity(creditDTO);
-        credit.setCreditStatus(CreditStatus.CALCULATED);
-        application.setCredit(credit);
-        applicationService.saveCreditData(credit);
-        applicationService.saveApplication(application);
-        return ResponseEntity.ok(creditDTO);
+        dealService.calculateCreditData(applicationId, finishRegistrationRequest);
+        return ResponseEntity.ok().build();
     }
 }
