@@ -23,27 +23,43 @@ public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "client_id")
     private Long clientId;
+
+    @Column(name = "first_name")
     private String firstName;
+
+    @Column(name = "last_name")
     private String lastName;
+
+    @Column(name = "middle_name")
     private String middleName;
+
+    @Column(name = "birth_date")
     private LocalDate birthDate;
+
+    @Column(name = "email")
     private String email;
 
-    @Column(columnDefinition = "varchar")
+    @Column(name = "gender")
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(columnDefinition = "varchar")
+    @Column(name = "marital_status")
+    @Enumerated(EnumType.STRING)
     private MaritalStatus maritalStatus;
 
+    @Column(name = "dependent_amount")
     private Integer dependentAmount;
+
+    @Column(name = "account")
     private String account;
 
     @Type(type = "jsonb")
-    @Column(columnDefinition = "jsonb")
+    @Column(name = "passport", columnDefinition = "jsonb")
     private Passport passport;
 
     @Type(type = "jsonb")
-    @Column(columnDefinition = "jsonb")
+    @Column(name = "employment", columnDefinition = "jsonb")
     private EmploymentDTO employment;
 }

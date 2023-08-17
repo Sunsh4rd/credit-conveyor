@@ -22,20 +22,35 @@ public class Credit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "credit_id")
     private Long creditId;
+
+    @Column(name = "amount")
     private BigDecimal amount;
+
+    @Column(name = "term")
     private Integer term;
+
+    @Column(name = "monthly_payment")
     private BigDecimal monthlyPayment;
+
+    @Column(name = "rate")
     private BigDecimal rate;
+
+    @Column(name = "psk")
     private BigDecimal psk;
 
     @Type(type = "jsonb")
-    @Column(columnDefinition = "jsonb")
+    @Column(name = "payment_schedule", columnDefinition = "jsonb")
     private List<PaymentScheduleElement> paymentSchedule;
 
+    @Column(name = "insurance_enabled")
     private Boolean insuranceEnabled;
+
+    @Column(name = "salary_client")
     private Boolean salaryClient;
 
-    @Column(columnDefinition = "varchar")
+    @Column(name = "credit_status")
+    @Enumerated(EnumType.STRING)
     private CreditStatus creditStatus;
 }

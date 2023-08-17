@@ -23,29 +23,35 @@ public class Application {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "application_id")
     private Long applicationId;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "clientId", referencedColumnName = "clientId")
+    @JoinColumn(name = "client_id", referencedColumnName = "client_id")
     private Client client;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "creditId", referencedColumnName = "creditId")
+    @JoinColumn(name = "credit_id", referencedColumnName = "credit_id")
     private Credit credit;
 
-    @Column(columnDefinition = "varchar")
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private ApplicationStatus status;
 
+    @Column(name = "creation_date")
     private LocalDateTime creationDate;
 
     @Type(type = "jsonb")
-    @Column(columnDefinition = "jsonb")
+    @Column(name = "applied_offer", columnDefinition = "jsonb")
     private LoanOfferDTO appliedOffer;
 
+    @Column(name = "sign_date")
     private LocalDateTime signDate;
+
+    @Column(name = "ses_code")
     private String sesCode;
 
     @Type(type = "jsonb")
-    @Column(columnDefinition = "jsonb")
+    @Column(name = "status_history", columnDefinition = "jsonb")
     private List<ApplicationStatusHistoryDTO> statusHistory;
 }
