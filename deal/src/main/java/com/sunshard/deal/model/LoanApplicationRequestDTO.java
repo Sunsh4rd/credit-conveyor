@@ -1,13 +1,11 @@
-package com.sunshard.conveyor.model;
+package com.sunshard.deal.model;
 
-import com.sunshard.conveyor.validator.BirthDate;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -18,7 +16,6 @@ import java.time.LocalDate;
 @Schema(description = "Loan application request")
 public class LoanApplicationRequestDTO {
 
-    @Min(10000)
     @Schema(
             type = "number",
             example = "300000",
@@ -26,7 +23,6 @@ public class LoanApplicationRequestDTO {
     )
     private BigDecimal amount;
 
-    @Min(6)
     @Schema(
             type = "integer",
             example = "18",
@@ -34,8 +30,6 @@ public class LoanApplicationRequestDTO {
     )
     private Integer term;
 
-    @NotBlank
-    @Size(min = 2, max = 30)
     @Schema(
             type = "string",
             example = "Moses",
@@ -43,8 +37,6 @@ public class LoanApplicationRequestDTO {
     )
     private String firstName;
 
-    @NotBlank
-    @Size(min = 2, max = 30)
     @Schema(
             type = "string",
             example = "Jackson",
@@ -52,7 +44,6 @@ public class LoanApplicationRequestDTO {
     )
     private String lastName;
 
-    @Size(min = 2, max = 30)
     @Schema(
             type = "string",
             example = "Fitzgerald",
@@ -60,40 +51,33 @@ public class LoanApplicationRequestDTO {
     )
     private String middleName;
 
-    @NotNull
+
     @Schema(
             type = "string",
             example = "your@mail.com",
             description = "your email"
     )
-    @Pattern(regexp = "^[\\w.]{2,50}@[\\w.]{2,20}$")
     private String email;
 
-    @NotNull
-    @BirthDate
     @Schema(
             type = "string",
             format = "date",
-            example = "2004-08-04",
+            example = "2000-08-04",
             description = "your birthdate"
     )
     private LocalDate birthDate;
 
-    @NotBlank
     @Schema(
             type = "string",
             example = "6020",
             description = "your passport series"
     )
-    @Pattern(regexp = "^[0-9]{4}$")
     private String passportSeries;
 
-    @NotBlank
     @Schema(
             type = "string",
             example = "425513",
             description = "your passport number"
     )
-    @Pattern(regexp = "^[0-9]{6}$")
     private String passportNumber;
 }

@@ -1,8 +1,8 @@
 # credit-conveyor
 
-There are examples of using credit conveyor microservice API
+## Conveyor microservice API
 
-## Creating loan offers
+### Creating loan offers
 
 ```http
 POST /conveyor/offers
@@ -41,7 +41,7 @@ POST /conveyor/offers
 ]
 ```
 
-## Calculating credit data
+### Calculating credit data
 
 ```http
 POST /conveyor/calculation
@@ -100,4 +100,105 @@ POST /conveyor/calculation
     }
   ]
 }
+```
+
+## Deal microservice API
+
+### Application for loan offers
+
+```http
+POST /deal/application
+```
+
+**Request body:**
+
+```json
+{
+  "amount": 300000,
+  "term": 18,
+  "firstName": "Moses",
+  "lastName": "Jackson",
+  "middleName": "Fitzgerald",
+  "email": "your@mail.com",
+  "birthdate": "2004-08-04",
+  "passportSeries": "6020",
+  "passportNumber": "425513"
+}
+```
+
+**Response body:**
+
+```json
+[
+  {
+    "applicationId": 1,
+    "requestedAmount": 300000,
+    "totalAmount": 448000,
+    "term": 18,
+    "monthlyPayment": 18000,
+    "rate": 11,
+    "isInsuranceEnabled": true,
+    "isSalaryClient": true
+  }
+]
+```
+
+### Apply provided loan offer and save it to the database
+
+```http
+PUT /deal/offer
+```
+
+**Request body:**
+
+```json
+{
+  "applicationId": 11,
+  "requestedAmount": 300000,
+  "totalAmount": 439070.76,
+  "term": 18,
+  "monthlyPayment": 24392.82,
+  "rate": 12,
+  "isInsuranceEnabled": true,
+  "isSalaryClient": false
+}
+```
+
+**Response**
+
+```http
+HTTP status
+```
+
+### Calculate credit data
+
+```http
+PUT /deal/calculate/{applicationId}
+```
+
+**Request body:**
+
+```json
+{
+  "gender": "MALE",
+  "maritalStatus": "SINGLE",
+  "dependentAmount": 3,
+  "passportIssueDate": "2020-09-12",
+  "passportIssueBranch": "Issue branch number 5",
+  "employment": {
+    "employmentStatus": "SELF_EMPLOYED",
+    "employerINN": "012345678987",
+    "salary": 50000,
+    "position": "TOP_MANAGER",
+    "workExperienceTotal": 12,
+    "workExperienceCurrent": 5
+  },
+  "account": "98765432100123456789"
+}
+```
+
+**Response**
+
+```http
+HTTP status
 ```
