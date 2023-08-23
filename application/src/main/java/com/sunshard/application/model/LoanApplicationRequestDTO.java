@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @Schema(description = "Loan application request")
 public class LoanApplicationRequestDTO {
 
-    @Min(10000)
+    @Min(value = 10000, message = "Minimal loan amount is 10000")
     @Schema(
             type = "number",
             example = "300000",
@@ -26,7 +26,7 @@ public class LoanApplicationRequestDTO {
     )
     private BigDecimal amount;
 
-    @Min(6)
+    @Min(value = 6, message = "Minimal loan term is 18")
     @Schema(
             type = "integer",
             example = "18",
@@ -35,7 +35,7 @@ public class LoanApplicationRequestDTO {
     private Integer term;
 
     @NotBlank
-    @Size(min = 2, max = 30)
+    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters long")
     @Schema(
             type = "string",
             example = "Moses",
@@ -44,7 +44,7 @@ public class LoanApplicationRequestDTO {
     private String firstName;
 
     @NotBlank
-    @Size(min = 2, max = 30)
+    @Size(min = 2, max = 30, message = "Last name should be between 2 and 30 characters long")
     @Schema(
             type = "string",
             example = "Jackson",
@@ -52,7 +52,7 @@ public class LoanApplicationRequestDTO {
     )
     private String lastName;
 
-    @Size(min = 2, max = 30)
+    @Size(min = 2, max = 30, message = "Middle name should be between 2 and 30 characters long")
     @Schema(
             type = "string",
             example = "Fitzgerald",
@@ -66,7 +66,7 @@ public class LoanApplicationRequestDTO {
             example = "your@mail.com",
             description = "your email"
     )
-    @Pattern(regexp = "^[\\w.]{2,50}@[\\w.]{2,20}$")
+    @Pattern(regexp = "^[\\w.]{2,50}@[\\w.]{2,20}$", message = "Email should match pattern")
     private String email;
 
     @NotNull
@@ -74,7 +74,7 @@ public class LoanApplicationRequestDTO {
     @Schema(
             type = "string",
             format = "date",
-            example = "2004-08-04",
+            example = "2000-08-04",
             description = "your birthdate"
     )
     private LocalDate birthDate;
@@ -85,7 +85,7 @@ public class LoanApplicationRequestDTO {
             example = "6020",
             description = "your passport series"
     )
-    @Pattern(regexp = "^[0-9]{4}$")
+    @Pattern(regexp = "^[0-9]{4}$", message = "Passport series should be 4 digits")
     private String passportSeries;
 
     @NotBlank
@@ -94,6 +94,6 @@ public class LoanApplicationRequestDTO {
             example = "425513",
             description = "your passport number"
     )
-    @Pattern(regexp = "^[0-9]{6}$")
+    @Pattern(regexp = "^[0-9]{6}$", message = "Passport number should be 6 digits")
     private String passportNumber;
 }

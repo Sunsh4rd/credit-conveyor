@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @Schema(description = "Loaner's scoring data")
 public class ScoringDataDTO {
 
-    @Min(10000)
+    @Min(value = 10000, message = "Minimal loan amount is 10000")
     @Schema(
             type = "number",
             example = "300000",
@@ -26,7 +26,7 @@ public class ScoringDataDTO {
     )
     private BigDecimal amount;
 
-    @Min(6)
+    @Min(value = 6, message = "Minimal loan term is 18")
     @Schema(
             type = "integer",
             example = "18",
@@ -35,7 +35,7 @@ public class ScoringDataDTO {
     private Integer term;
 
     @NotBlank
-    @Size(min = 2, max = 30)
+    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters long")
     @Schema(
             type = "string",
             example = "Moses",
@@ -44,7 +44,7 @@ public class ScoringDataDTO {
     private String firstName;
 
     @NotBlank
-    @Size(min = 2, max = 30)
+    @Size(min = 2, max = 30, message = "Last name should be between 2 and 30 characters long")
     @Schema(
             type = "string",
             example = "Jackson",
@@ -52,7 +52,7 @@ public class ScoringDataDTO {
     )
     private String lastName;
 
-    @Size(min = 2, max = 30)
+    @Size(min = 2, max = 30, message = "Middle name should be between 2 and 30 characters long")
     @Schema(
             type = "string",
             example = "Fitzgerald",
@@ -83,7 +83,7 @@ public class ScoringDataDTO {
             example = "6020",
             description = "your passport series"
     )
-    @Pattern(regexp = "^[0-9]{4}$")
+    @Pattern(regexp = "^[0-9]{4}$", message = "Passport series should be 4 digits")
     private String passportSeries;
 
     @NotBlank
@@ -92,7 +92,7 @@ public class ScoringDataDTO {
             example = "425513",
             description = "your passport number"
     )
-    @Pattern(regexp = "^[0-9]{6}$")
+    @Pattern(regexp = "^[0-9]{6}$", message = "Passport number should be 6 digits")
     private String passportNumber;
 
     @NotNull
