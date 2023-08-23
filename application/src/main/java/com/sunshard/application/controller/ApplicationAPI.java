@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Tag(name = "Application", description = "Application methods")
@@ -22,7 +23,7 @@ public interface ApplicationAPI {
             },
             description = "Provide possible loan offers"
     )
-    ResponseEntity<List<LoanOfferDTO>> createLoanOffers(@RequestBody LoanApplicationRequestDTO request);
+    ResponseEntity<List<LoanOfferDTO>> createLoanOffers(@Valid @RequestBody LoanApplicationRequestDTO request);
 
     @Operation(
             summary = "Apply certain loan offer",
@@ -31,5 +32,5 @@ public interface ApplicationAPI {
             description = "Apply provided loan offer and save it"
     )
     @PutMapping("/application/offer")
-    ResponseEntity<Void> applyLoanOffer(@RequestBody LoanOfferDTO loanOffer);
+    ResponseEntity<Void> applyLoanOffer(@Valid @RequestBody LoanOfferDTO loanOffer);
 }

@@ -18,11 +18,15 @@ databaseChangeLog:
                   type: bigint
                   constraints:
                     foreignKey: client_id
+                    foreignKeyName: fk_application_client
+                    references: client (client_id)
               - column:
                   name: credit_id
                   type: bigint
                   constraints:
                     foreignKey: credit_id
+                    foreignKeyName: fk_application_credit
+                    references: credit (credit_id)
               - column:
                   name: status
                   type: varchar
