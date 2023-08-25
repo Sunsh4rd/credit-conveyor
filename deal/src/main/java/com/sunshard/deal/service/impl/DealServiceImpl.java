@@ -45,7 +45,7 @@ public class DealServiceImpl implements DealService {
     private final ApplicationMapper applicationMapper;
     private final ScoringDataMapper scoringDataMapper;
     private final CreditConveyorFeignClient creditConveyorFeignClient;
-    private final Logger logger = LogManager.getLogger(DealServiceImpl.class.getName());
+    private static final Logger logger = LogManager.getLogger(DealServiceImpl.class.getName());
 
     /**
      * Calls the <i>feign client</i> to receive <i>loan offers</i> from <i>credit conveyor</i>

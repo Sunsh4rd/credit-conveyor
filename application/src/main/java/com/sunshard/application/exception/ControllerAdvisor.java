@@ -1,4 +1,4 @@
-package com.sunshard.conveyor.exception;
+package com.sunshard.application.exception;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,17 +36,6 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         body.put("status", status.value());
         body.put("errors", allErrors);
         logger.error("Causing errors: {}", allErrors);
-        return ResponseEntity.badRequest().body(body);
-    }
-
-    @ExceptionHandler(value = {CreditDeniedException.class})
-    public ResponseEntity<Object> handleCreditDeniedException(
-            CreditDeniedException ex
-    ) {
-        logger.error("Credit was denied due to: {}", ex.getMessage());
-        Map<String, Object> body = new HashMap<>();
-        body.put("message", ex.getMessage());
-        body.put("timestamp", LocalDate.now());
         return ResponseEntity.badRequest().body(body);
     }
 }

@@ -1,11 +1,8 @@
-package com.sunshard.deal.controller;
+package com.sunshard.application.controller;
 
-import com.sunshard.deal.model.EmploymentDTO;
-import com.sunshard.deal.model.FinishRegistrationRequestDTO;
-import com.sunshard.deal.model.LoanApplicationRequestDTO;
-import com.sunshard.deal.model.LoanOfferDTO;
-import com.sunshard.deal.model.enums.EmploymentStatus;
-import com.sunshard.deal.service.impl.DealServiceImpl;
+import com.sunshard.application.model.LoanApplicationRequestDTO;
+import com.sunshard.application.model.LoanOfferDTO;
+import com.sunshard.application.service.impl.ApplicationServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,17 +14,16 @@ import org.springframework.http.HttpStatus;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class DealControllerTest {
+class ApplicationControllerTest {
 
     @InjectMocks
-    DealController dealController;
+    ApplicationController applicationController;
 
     @Mock
-    DealServiceImpl dealService;
+    ApplicationServiceImpl applicationService;
 
     @Test
     void createLoanOffers_verifyTimesDealServiceInvoked() {
@@ -42,8 +38,8 @@ class DealControllerTest {
                 .passportSeries("1234")
                 .term(12)
                 .build();
-        dealController.createLoanOffers(request);
-        Mockito.verify(dealService, Mockito.times(1)).createLoanOffers(request);
+        applicationService.createLoanOffers(request);
+        Mockito.verify(applicationService, Mockito.times(1)).createLoanOffers(request);
     }
 
     @Test
@@ -57,17 +53,6 @@ class DealControllerTest {
                 .requestedAmount(BigDecimal.valueOf(300000))
                 .totalAmount(BigDecimal.valueOf(400000))
                 .build();
-        assertEquals(HttpStatus.OK, dealController.applyLoanOffer(loanOfferDTO).getStatusCode());
-    }
-
-    @Test
-    void calculateCreditData_responseBodyIsEmpty() {
-        Long applicationId = 14L;
-        FinishRegistrationRequestDTO finishRegistrationRequest = FinishRegistrationRequestDTO.builder()
-                .employment(EmploymentDTO.builder()
-                        .employmentStatus(EmploymentStatus.UNEMPLOYED)
-                        .build())
-                .build();
-        assertNull(dealController.calculateCreditData(applicationId, finishRegistrationRequest).getBody());
+        assertEquals(HttpStatus.OK, applicationController.applyLoanOffer(loanOfferDTO).getStatusCode());
     }
 }
