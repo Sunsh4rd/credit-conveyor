@@ -15,4 +15,22 @@ spring:
       ddl-auto: validate
     show-sql: true
 
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: SsoslickK@gmail.com
+    password: peqidhtqtxbmuvmr
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 conveyor-address: localhost:8080

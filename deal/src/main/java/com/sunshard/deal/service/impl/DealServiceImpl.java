@@ -6,6 +6,7 @@ import com.sunshard.deal.entity.Client;
 import com.sunshard.deal.entity.Credit;
 import com.sunshard.deal.exception.ApplicationNotFoundException;
 import com.sunshard.deal.exception.LoanOffersNotCreatedException;
+import com.sunshard.deal.kafka.KafkaProducer;
 import com.sunshard.deal.mapper.ApplicationMapper;
 import com.sunshard.deal.mapper.ClientMapper;
 import com.sunshard.deal.mapper.CreditMapper;
@@ -14,6 +15,7 @@ import com.sunshard.deal.model.*;
 import com.sunshard.deal.model.enums.ApplicationStatus;
 import com.sunshard.deal.model.enums.ChangeType;
 import com.sunshard.deal.model.enums.CreditStatus;
+import com.sunshard.deal.model.enums.Theme;
 import com.sunshard.deal.repository.ApplicationRepository;
 import com.sunshard.deal.repository.ClientRepository;
 import com.sunshard.deal.repository.CreditRepository;
@@ -45,6 +47,7 @@ public class DealServiceImpl implements DealService {
     private final ApplicationMapper applicationMapper;
     private final ScoringDataMapper scoringDataMapper;
     private final CreditConveyorFeignClient creditConveyorFeignClient;
+    private final KafkaProducer producer;
     private static final Logger logger = LogManager.getLogger(DealServiceImpl.class.getName());
 
     /**
@@ -95,6 +98,7 @@ public class DealServiceImpl implements DealService {
         );
         applicationDTO.setStatusHistory(statusHistory);
         applicationDTO.setAppliedOffer(loanOffer);
+        producer.sendMessage(Theme.FINISH_REGISTRATION, "It works, id" + applicationDTO.getApplicationId());
         saveApplication(applicationMapper.dtoToEntity(applicationDTO));
     }
 
