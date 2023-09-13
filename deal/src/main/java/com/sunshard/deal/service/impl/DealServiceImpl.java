@@ -98,7 +98,12 @@ public class DealServiceImpl implements DealService {
         );
         applicationDTO.setStatusHistory(statusHistory);
         applicationDTO.setAppliedOffer(loanOffer);
-        producer.sendMessage(Theme.FINISH_REGISTRATION, "It works, id" + applicationDTO.getApplicationId());
+        EmailMessage message = EmailMessage.builder()
+                .address(applicationDTO.getClient().getEmail())
+                .theme(Theme.FINISH_REGISTRATION)
+                .applicationId(applicationDTO.getApplicationId())
+                .build();
+        producer.sendMessage(Theme.FINISH_REGISTRATION, message);
         saveApplication(applicationMapper.dtoToEntity(applicationDTO));
     }
 
