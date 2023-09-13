@@ -124,8 +124,14 @@ public class DealServiceImpl implements DealService {
         Credit credit = creditMapper.dtoToEntity(creditDTO);
         credit.setCreditStatus(CreditStatus.CALCULATED);
         application.setCredit(credit);
+        EmailMessage message = EmailMessage.builder()
+                .address(application.getClient().getEmail())
+                .theme(Theme.CREATE_DOCUMENTS)
+                .applicationId(applicationId)
+                .build();
         saveCreditData(credit);
         saveApplication(application);
+        producer.sendMessage(Theme.CREATE_DOCUMENTS, message);
     }
 
     /**

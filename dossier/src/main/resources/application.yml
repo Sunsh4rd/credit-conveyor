@@ -7,13 +7,14 @@ spring:
     consumer:
       bootstrap-servers: localhost:9092
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: com.sunshard.dossier.serializer.EmailMessageDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id: my-group
 #      properties:
 #        spring:
-#          json:
-#            trusted:
-#              packages: com.sunshard.deal.model
+#          deserializer:
+#            value:
+#              delegate:
+#                class: com.sunshard.dossier.serializer.EmailMessageDeserializer
 
   mail:
     host: smtp.gmail.com

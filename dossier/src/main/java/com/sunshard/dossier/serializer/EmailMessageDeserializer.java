@@ -7,7 +7,6 @@ import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.serialization.Deserializer;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Map;
 
 public class EmailMessageDeserializer implements Deserializer<EmailMessage> {
