@@ -177,7 +177,7 @@ public class DealServiceImpl implements DealService {
      * Find <i>application</i> by the provided <i>id</i>
      * @param id provided id
      * @return found application
-     * @throws IllegalArgumentException if no application was found
+     * @throws ApplicationNotFoundException if no application was found
      * @see Application
      */
     private Application getApplicationById(Long id) {

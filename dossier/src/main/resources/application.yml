@@ -9,12 +9,6 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id: my-group
-#      properties:
-#        spring:
-#          deserializer:
-#            value:
-#              delegate:
-#                class: com.sunshard.dossier.serializer.EmailMessageDeserializer
 
   mail:
     host: smtp.gmail.com
@@ -27,3 +21,5 @@ spring:
           auth: true
           starttls:
             enable: true
+
+deal-address: localhost:8081

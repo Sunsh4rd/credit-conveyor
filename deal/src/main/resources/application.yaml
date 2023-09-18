@@ -21,16 +21,4 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: SsoslickK@gmail.com
-    password: peqidhtqtxbmuvmr
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-
 conveyor-address: localhost:8080
