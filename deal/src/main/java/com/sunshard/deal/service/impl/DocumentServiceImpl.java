@@ -6,11 +6,11 @@ import com.sunshard.deal.entity.Credit;
 import com.sunshard.deal.exception.ApplicationNotFoundException;
 import com.sunshard.deal.kafka.KafkaProducer;
 import com.sunshard.deal.mapper.ApplicationMapper;
-import com.sunshard.deal.mapper.CreditMapper;
-import com.sunshard.deal.model.*;
+import com.sunshard.deal.model.ApplicationStatusHistoryDTO;
+import com.sunshard.deal.model.EmailMessage;
+import com.sunshard.deal.model.PaymentScheduleElement;
 import com.sunshard.deal.model.enums.ApplicationStatus;
 import com.sunshard.deal.model.enums.ChangeType;
-import com.sunshard.deal.model.enums.CreditStatus;
 import com.sunshard.deal.model.enums.Theme;
 import com.sunshard.deal.repository.ApplicationRepository;
 import com.sunshard.deal.service.DocumentService;
@@ -93,24 +93,48 @@ public class DocumentServiceImpl implements DocumentService {
     public void signDocuments(Long applicationId, Integer sesCode) {
         logger.info("Checking ses code and issuing credit for application {}", applicationId);
         Application application = getApplicationById(applicationId);
-        application.setStatus(ApplicationStatus.DOCUMENT_SIGNED);
-        List<ApplicationStatusHistoryDTO> history = application.getStatusHistory();
-        history.add(
-                ApplicationStatusHistoryDTO.builder()
-                        .status(ApplicationStatus.DOCUMENT_SIGNED)
-                        .time(LocalDateTime.now())
-                        .changeType(ChangeType.AUTOMATIC)
-                        .build()
-        );
-        application.setStatusHistory(history);
-        saveApplication(application);
-        EmailMessage message = EmailMessage.builder()
-                .applicationId(applicationId)
-                .theme(Theme.CREDIT_ISSUED)
-                .address(application.getClient().getEmail())
-                .build();
-        producer.sendMessage(Theme.CREDIT_ISSUED, message);
-        logger.info("Sent message of issuing credit");
+        String savedSesCode = application.getSesCode();
+        if (!savedSesCode.equals(sesCode.toString())) {
+            logger.error("Wrong ses code was provided for application {}. Sending denial email", applicationId);
+            application.setStatus(ApplicationStatus.CC_DENIED);
+            List<ApplicationStatusHistoryDTO> history = application.getStatusHistory();
+            history.add(
+                    ApplicationStatusHistoryDTO.builder()
+                            .status(ApplicationStatus.CC_DENIED)
+                            .time(LocalDateTime.now())
+                            .changeType(ChangeType.AUTOMATIC)
+                            .build()
+            );
+            EmailMessage message = EmailMessage.builder()
+                    .applicationId(applicationId)
+                    .address(application.getClient().getEmail())
+                    .theme(Theme.APPLICATION_DENIED)
+                    .build();
+            application.setStatusHistory(history);
+            saveApplication(application);
+            producer.sendMessage(Theme.APPLICATION_DENIED, message);
+            logger.info("Denial email was sent for application {}", applicationId);
+        } else {
+            logger.info("Provided correct ses code. Sending email for application {}", applicationId);
+            application.setStatus(ApplicationStatus.DOCUMENT_SIGNED);
+            List<ApplicationStatusHistoryDTO> history = application.getStatusHistory();
+            history.add(
+                    ApplicationStatusHistoryDTO.builder()
+                            .status(ApplicationStatus.DOCUMENT_SIGNED)
+                            .time(LocalDateTime.now())
+                            .changeType(ChangeType.AUTOMATIC)
+                            .build()
+            );
+            application.setStatusHistory(history);
+            saveApplication(application);
+            EmailMessage message = EmailMessage.builder()
+                    .applicationId(applicationId)
+                    .theme(Theme.CREDIT_ISSUED)
+                    .address(application.getClient().getEmail())
+                    .build();
+            producer.sendMessage(Theme.CREDIT_ISSUED, message);
+            logger.info("Sent message of issuing credit");
+        }
     }
 
     /**

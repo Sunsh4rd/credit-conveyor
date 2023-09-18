@@ -135,4 +135,20 @@ public class KafkaConsumer {
                 "You are now good to go, wait for money"
         );
     }
+
+    @KafkaListener(topics = "application-denied", groupId = "my-group")
+    public void listenApplicationDenied(ConsumerRecord<String, String> record) {
+        EmailMessage message;
+        try {
+            message = objectMapper.readValue(record.value(), EmailMessage.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        logger.info("Sending message of credit denial application {}", message.getApplicationId());
+        emailService.sendMessage(
+                message.getAddress(),
+                message.getTheme().getName(),
+                "Your loan application was denied"
+        );
+    }
 }
