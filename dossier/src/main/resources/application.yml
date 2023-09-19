@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: 8084
 
 spring:
 
@@ -22,4 +22,4 @@ spring:
           starttls:
             enable: true
 
-deal-address: localhost:8081
+deal-address: localhost:8082
