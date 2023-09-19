@@ -1,7 +1,8 @@
-package com.sunshard.dossier.service;
+package com.sunshard.dossier.service.impl;
 
 import com.sunshard.dossier.exception.AttachmentNotCreatedException;
 import com.sunshard.dossier.exception.EmailNotCreatedException;
+import com.sunshard.dossier.service.EmailService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,10 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.FileNotFoundException;
 
+/**
+ * Service for sending emails to loaners
+ */
+
 @Service
 public class EmailServiceImpl implements EmailService {
 
@@ -28,6 +33,12 @@ public class EmailServiceImpl implements EmailService {
 
     private static final Logger logger = LogManager.getLogger(EmailServiceImpl.class.getName());
 
+    /**
+     * Send simple text email
+     * @param to email addressee
+     * @param subject email subject
+     * @param body email body
+     */
     @Override
     public void sendMessage(String to, String subject, String body) {
         logger.info("Sending email to {}, subject {}", to, subject);
@@ -40,6 +51,13 @@ public class EmailServiceImpl implements EmailService {
         logger.info("Email was sent");
     }
 
+    /**
+     * Send email with attachment
+     * @param to email addressee
+     * @param subject email subject
+     * @param body email body
+     * @param attachment email attachment
+     */
     @Override
     public void sendMessageWithAttachment(String to, String subject, String body, String attachment) {
         logger.info("Sending email with attachments to {}, subject {}", to, subject);

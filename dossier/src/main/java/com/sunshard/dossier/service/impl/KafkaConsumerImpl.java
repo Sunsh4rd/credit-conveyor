@@ -1,9 +1,12 @@
-package com.sunshard.dossier.service;
+package com.sunshard.dossier.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sunshard.dossier.client.DealFeignClient;
+import com.sunshard.dossier.exception.AttachmentNotCreatedException;
 import com.sunshard.dossier.model.EmailMessage;
+import com.sunshard.dossier.service.EmailService;
+import com.sunshard.dossier.service.KafkaConsumerService;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.logging.log4j.LogManager;
@@ -11,22 +14,28 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Service for listening to messages in kafka topics
+ */
 @Service
 @RequiredArgsConstructor
-public class KafkaConsumer {
+public class KafkaConsumerImpl implements KafkaConsumerService {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final EmailService emailService;
     private final DealFeignClient dealFeignClient;
 
-    private static final Logger logger = LogManager.getLogger(KafkaConsumer.class.getName());
+    private static final Logger logger = LogManager.getLogger(KafkaConsumerImpl.class.getName());
 
+    /**
+     * Listen to finish-registration topic and send email with finishing registration request
+     * @param record kafka consumer record
+     */
+    @Override
     @KafkaListener(topics = "finish-registration", groupId = "my-group")
     public void listenFinishRegistration(ConsumerRecord<String, String> record) {
         EmailMessage message;
@@ -43,6 +52,11 @@ public class KafkaConsumer {
         );
     }
 
+    /**
+     * Listen to create-documents topic and send email with creating documents request
+     * @param record kafka consumer record
+     */
+    @Override
     @KafkaListener(topics = "create-documents", groupId = "my-group")
     public void listenCreateDocuments(ConsumerRecord<String, String> record) {
         EmailMessage message;
@@ -61,6 +75,11 @@ public class KafkaConsumer {
         );
     }
 
+    /**
+     * Listen to send-documents topic and send email with signing documents request
+     * @param record kafka consumer record
+     */
+    @Override
     @KafkaListener(topics = "send-documents", groupId = "my-group")
     public void listenSendDocuments(ConsumerRecord<String, String> record) {
         EmailMessage message;
@@ -75,7 +94,7 @@ public class KafkaConsumer {
         try {
             fileWriter = new FileWriter("docs" + message.getApplicationId());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new AttachmentNotCreatedException(e.getMessage());
         }
         PrintWriter printWriter = new PrintWriter(fileWriter);
         printWriter.println(creditData);
@@ -83,24 +102,24 @@ public class KafkaConsumer {
         try {
             fileWriter.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new AttachmentNotCreatedException(e.getMessage());
         }
-        try {
-            emailService.sendMessageWithAttachment(
-                    message.getAddress(),
-                    message.getTheme().getName(),
-                    "Your documents are ready and attached to this email. Now send signing documents request for application "
-                            + message.getApplicationId()
-                            + " by the following link: http://localhost:8081/swagger-ui/index.html#/Documents/signRequest",
-                    "docs" + message.getApplicationId()
-            );
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+
+        emailService.sendMessageWithAttachment(
+                message.getAddress(),
+                message.getTheme().getName(),
+                "Your documents are ready and attached to this email. Now send signing documents request for application "
+                        + message.getApplicationId()
+                        + " by the following link: http://localhost:8081/swagger-ui/index.html#/Documents/signRequest",
+                "docs" + message.getApplicationId()
+        );
     }
 
+    /**
+     * Listen to send-ses topic and send email with providing ses code request
+     * @param record kafka consumer record
+     */
+    @Override
     @KafkaListener(topics = "send-ses", groupId = "my-group")
     public void listenSendSes(ConsumerRecord<String, String> record) {
         EmailMessage message;
@@ -120,8 +139,13 @@ public class KafkaConsumer {
         );
     }
 
+    /**
+     * Listen to credit-issued topic and send approving email
+     * @param record kafka consumer record
+     */
+    @Override
     @KafkaListener(topics = "credit-issued", groupId = "my-group")
-    public void listenCredit(ConsumerRecord<String, String> record) {
+    public void listenCreditIssued(ConsumerRecord<String, String> record) {
         EmailMessage message;
         try {
             message = objectMapper.readValue(record.value(), EmailMessage.class);
@@ -136,6 +160,11 @@ public class KafkaConsumer {
         );
     }
 
+    /**
+     * Listen to application-denied topic and send denial email
+     * @param record kafka consumer record
+     */
+    @Override
     @KafkaListener(topics = "application-denied", groupId = "my-group")
     public void listenApplicationDenied(ConsumerRecord<String, String> record) {
         EmailMessage message;

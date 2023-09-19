@@ -4,15 +4,16 @@ import com.sunshard.deal.entity.Application;
 import com.sunshard.deal.entity.Client;
 import com.sunshard.deal.entity.Credit;
 import com.sunshard.deal.exception.ApplicationNotFoundException;
-import com.sunshard.deal.kafka.KafkaProducer;
 import com.sunshard.deal.mapper.ApplicationMapper;
+import com.sunshard.deal.mapper.CreditMapper;
 import com.sunshard.deal.model.ApplicationStatusHistoryDTO;
 import com.sunshard.deal.model.EmailMessage;
-import com.sunshard.deal.model.PaymentScheduleElement;
 import com.sunshard.deal.model.enums.ApplicationStatus;
 import com.sunshard.deal.model.enums.ChangeType;
+import com.sunshard.deal.model.enums.CreditStatus;
 import com.sunshard.deal.model.enums.Theme;
 import com.sunshard.deal.repository.ApplicationRepository;
+import com.sunshard.deal.repository.CreditRepository;
 import com.sunshard.deal.service.DocumentService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -24,22 +25,30 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Service for sending email data to dossier ms
+ */
+
 @Service
 @RequiredArgsConstructor
 public class DocumentServiceImpl implements DocumentService {
 
-    private final KafkaProducer producer;
+    private final KafkaProducerImpl producer;
     private final ApplicationRepository applicationRepository;
+    private final CreditRepository creditRepository;
     private final ApplicationMapper applicationMapper;
+    private final CreditMapper creditMapper;
 
     private static final Logger logger = LogManager.getLogger(DocumentServiceImpl.class.getName());
 
+    /** Send email data for requiring documents creation for certain application
+     * @param applicationId - the id of application
+     */
     @Override
     public void createDocuments(Long applicationId) {
         logger.info("Creating documents for application {}", applicationId);
         Application application = getApplicationById(applicationId);
         Client client = application.getClient();
-        Credit credit = application.getCredit();
         application.setStatus(ApplicationStatus.PREPARE_DOCUMENTS);
         List<ApplicationStatusHistoryDTO> history = application.getStatusHistory();
         history.add(
@@ -51,7 +60,6 @@ public class DocumentServiceImpl implements DocumentService {
         );
         application.setStatusHistory(history);
         saveApplication(application);
-        List<PaymentScheduleElement> paymentSchedule = application.getCredit().getPaymentSchedule();
         EmailMessage message = EmailMessage.builder()
                 .applicationId(applicationId)
                 .theme(Theme.SEND_DOCUMENTS)
@@ -61,6 +69,10 @@ public class DocumentServiceImpl implements DocumentService {
         logger.info("Message of creating documents sent");
     }
 
+    /**
+     * Send email data for requiring signing the documents for certain application
+     * @param applicationId - the id of application
+     */
     @Override
     @Transactional
     public void signRequest(Long applicationId) {
@@ -89,7 +101,13 @@ public class DocumentServiceImpl implements DocumentService {
         logger.info("Sign request sent");
     }
 
+    /**
+     * Send email data for issuing or denial of credit for application
+     * @param applicationId - the id of application
+     * @param sesCode - ses code of the application
+     */
     @Override
+    @Transactional
     public void signDocuments(Long applicationId, Integer sesCode) {
         logger.info("Checking ses code and issuing credit for application {}", applicationId);
         Application application = getApplicationById(applicationId);
@@ -118,6 +136,9 @@ public class DocumentServiceImpl implements DocumentService {
             logger.info("Provided correct ses code. Sending email for application {}", applicationId);
             application.setStatus(ApplicationStatus.DOCUMENT_SIGNED);
             List<ApplicationStatusHistoryDTO> history = application.getStatusHistory();
+            Credit credit = application.getCredit();
+            credit.setCreditStatus(CreditStatus.ISSUED);
+            saveCredit(credit);
             history.add(
                     ApplicationStatusHistoryDTO.builder()
                             .status(ApplicationStatus.DOCUMENT_SIGNED)
@@ -163,5 +184,15 @@ public class DocumentServiceImpl implements DocumentService {
         logger.info("Saving application to the database:\n{}", applicationMapper.entityToDto(application));
         applicationRepository.save(application);
         logger.info("Application saved");
+    }
+
+    /**
+     * Save provided credit to the database
+     * @param credit provided credit
+     */
+    private void saveCredit(Credit credit) {
+        logger.info("Saving credit to the database:\n{}", creditMapper.entityToDto(credit));
+        creditRepository.save(credit);
+        logger.info("Credit saved");
     }
 }

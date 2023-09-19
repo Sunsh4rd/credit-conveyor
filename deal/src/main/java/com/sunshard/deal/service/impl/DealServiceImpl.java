@@ -6,7 +6,6 @@ import com.sunshard.deal.entity.Client;
 import com.sunshard.deal.entity.Credit;
 import com.sunshard.deal.exception.ApplicationNotFoundException;
 import com.sunshard.deal.exception.LoanOffersNotCreatedException;
-import com.sunshard.deal.kafka.KafkaProducer;
 import com.sunshard.deal.mapper.ApplicationMapper;
 import com.sunshard.deal.mapper.ClientMapper;
 import com.sunshard.deal.mapper.CreditMapper;
@@ -20,10 +19,10 @@ import com.sunshard.deal.repository.ApplicationRepository;
 import com.sunshard.deal.repository.ClientRepository;
 import com.sunshard.deal.repository.CreditRepository;
 import com.sunshard.deal.service.DealService;
+import com.sunshard.deal.service.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.context.ApplicationContextException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +46,7 @@ public class DealServiceImpl implements DealService {
     private final ApplicationMapper applicationMapper;
     private final ScoringDataMapper scoringDataMapper;
     private final CreditConveyorFeignClient creditConveyorFeignClient;
-    private final KafkaProducer producer;
+    private final KafkaProducerService producer;
     private static final Logger logger = LogManager.getLogger(DealServiceImpl.class.getName());
 
     /**

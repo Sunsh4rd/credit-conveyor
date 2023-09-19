@@ -14,6 +14,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service for sending required data to dossier ms
+ */
+
 @Service
 @RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
@@ -25,6 +29,13 @@ public class ClientServiceImpl implements ClientService {
 
     private static final Logger logger = LogManager.getLogger(ClientServiceImpl.class.getName());
 
+
+    /**
+     * Get the credit data related to the application defined by applicationId
+     * for creating documents
+     * @param applicationId - id of the application
+     * @return Credit data
+     */
     @Override
     public String getCreditData(Long applicationId) {
         ApplicationDTO application = applicationMapper.entityToDto(applicationRepository.findById(applicationId).get());
@@ -35,6 +46,11 @@ public class ClientServiceImpl implements ClientService {
         return creditData;
     }
 
+    /**
+     * Get the ses code of the application defined by applicationId
+     * @param applicationId - id of the application
+     * @return Ses code
+     */
     @Override
     public String getSesCode(Long applicationId) {
         logger.info("Getting ses code for application {}", applicationId);
