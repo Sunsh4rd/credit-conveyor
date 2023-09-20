@@ -6,7 +6,6 @@ import com.sunshard.dossier.client.DealFeignClient;
 import com.sunshard.dossier.exception.AttachmentNotCreatedException;
 import com.sunshard.dossier.model.EmailMessage;
 import com.sunshard.dossier.service.EmailService;
-import com.sunshard.dossier.service.KafkaConsumerService;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.logging.log4j.LogManager;
@@ -23,19 +22,18 @@ import java.io.PrintWriter;
  */
 @Service
 @RequiredArgsConstructor
-public class KafkaConsumerImpl implements KafkaConsumerService {
+public class KafkaConsumer {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final EmailService emailService;
     private final DealFeignClient dealFeignClient;
 
-    private static final Logger logger = LogManager.getLogger(KafkaConsumerImpl.class.getName());
+    private static final Logger logger = LogManager.getLogger(KafkaConsumer.class.getName());
 
     /**
      * Listen to finish-registration topic and send email with finishing registration request
      * @param record kafka consumer record
      */
-    @Override
     @KafkaListener(topics = "finish-registration", groupId = "my-group")
     public void listenFinishRegistration(ConsumerRecord<String, String> record) {
         EmailMessage message;
@@ -56,7 +54,6 @@ public class KafkaConsumerImpl implements KafkaConsumerService {
      * Listen to create-documents topic and send email with creating documents request
      * @param record kafka consumer record
      */
-    @Override
     @KafkaListener(topics = "create-documents", groupId = "my-group")
     public void listenCreateDocuments(ConsumerRecord<String, String> record) {
         EmailMessage message;
@@ -79,7 +76,6 @@ public class KafkaConsumerImpl implements KafkaConsumerService {
      * Listen to send-documents topic and send email with signing documents request
      * @param record kafka consumer record
      */
-    @Override
     @KafkaListener(topics = "send-documents", groupId = "my-group")
     public void listenSendDocuments(ConsumerRecord<String, String> record) {
         EmailMessage message;
@@ -119,7 +115,6 @@ public class KafkaConsumerImpl implements KafkaConsumerService {
      * Listen to send-ses topic and send email with providing ses code request
      * @param record kafka consumer record
      */
-    @Override
     @KafkaListener(topics = "send-ses", groupId = "my-group")
     public void listenSendSes(ConsumerRecord<String, String> record) {
         EmailMessage message;
@@ -143,7 +138,6 @@ public class KafkaConsumerImpl implements KafkaConsumerService {
      * Listen to credit-issued topic and send approving email
      * @param record kafka consumer record
      */
-    @Override
     @KafkaListener(topics = "credit-issued", groupId = "my-group")
     public void listenCreditIssued(ConsumerRecord<String, String> record) {
         EmailMessage message;
@@ -164,7 +158,6 @@ public class KafkaConsumerImpl implements KafkaConsumerService {
      * Listen to application-denied topic and send denial email
      * @param record kafka consumer record
      */
-    @Override
     @KafkaListener(topics = "application-denied", groupId = "my-group")
     public void listenApplicationDenied(ConsumerRecord<String, String> record) {
         EmailMessage message;

@@ -1,5 +1,6 @@
 package com.sunshard.deal.service.impl;
 
+import com.sunshard.deal.entity.Application;
 import com.sunshard.deal.exception.ApplicationNotFoundException;
 import com.sunshard.deal.mapper.ApplicationMapper;
 import com.sunshard.deal.model.ApplicationDTO;
@@ -25,12 +26,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public ApplicationDTO getApplicationById(Long applicationId) {
         logger.info("Searching for application {}", applicationId);
-        ApplicationDTO application = applicationMapper.entityToDto(
-                applicationRepository.findById(applicationId).orElseThrow(
+        Application application = applicationRepository.findById(applicationId).orElseThrow(
                 () -> new ApplicationNotFoundException(applicationId)
-                ));
-        logger.info("Found application {}\n{}", applicationId, application);
-        return application;
+        );
+        ApplicationDTO applicationDTO = applicationMapper.entityToDto(application);
+        logger.info("Found application {}\n{}", applicationId, applicationDTO);
+        return applicationDTO;
     }
 
     @Override

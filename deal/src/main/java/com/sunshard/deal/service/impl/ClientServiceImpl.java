@@ -1,5 +1,6 @@
 package com.sunshard.deal.service.impl;
 
+import com.sunshard.deal.entity.Application;
 import com.sunshard.deal.exception.ApplicationNotFoundException;
 import com.sunshard.deal.mapper.ApplicationMapper;
 import com.sunshard.deal.mapper.ClientMapper;
@@ -38,10 +39,13 @@ public class ClientServiceImpl implements ClientService {
      */
     @Override
     public String getCreditData(Long applicationId) {
-        ApplicationDTO application = applicationMapper.entityToDto(applicationRepository.findById(applicationId).get());
-        ClientDTO client = clientMapper.entityToDto(application.getClient());
-        CreditDTO credit = creditMapper.entityToDto(application.getCredit());
-        String creditData = String.join("\n", application.toString(), credit.toString(), client.toString());
+        Application application = applicationRepository.findById(applicationId).orElseThrow(
+                () -> new ApplicationNotFoundException(applicationId)
+        );
+        ApplicationDTO applicationDTO = applicationMapper.entityToDto(application);
+        ClientDTO client = clientMapper.entityToDto(applicationDTO.getClient());
+        CreditDTO credit = creditMapper.entityToDto(applicationDTO.getCredit());
+        String creditData = String.join("\n", applicationDTO.toString(), credit.toString(), client.toString());
         logger.info("Credit data for documents for application {}", applicationId);
         return creditData;
     }

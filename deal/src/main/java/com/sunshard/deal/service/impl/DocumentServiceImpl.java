@@ -88,8 +88,7 @@ public class DocumentServiceImpl implements DocumentService {
                         .build()
         );
         application.setStatusHistory(history);
-        Random random = new Random();
-        int sesCode = 1000 + random.nextInt(9000);
+        int sesCode = generateSesCode();
         application.setSesCode(String.valueOf(sesCode));
         saveApplication(application);
         EmailMessage message = EmailMessage.builder()
@@ -181,7 +180,7 @@ public class DocumentServiceImpl implements DocumentService {
      * @see Application
      */
     private void saveApplication(Application application) {
-        logger.info("Saving application to the database:\n{}", applicationMapper.entityToDto(application));
+        logger.info("Saving application to the database:\n{}", application);
         applicationRepository.save(application);
         logger.info("Application saved");
     }
@@ -191,8 +190,16 @@ public class DocumentServiceImpl implements DocumentService {
      * @param credit provided credit
      */
     private void saveCredit(Credit credit) {
-        logger.info("Saving credit to the database:\n{}", creditMapper.entityToDto(credit));
+        logger.info("Saving credit to the database:\n{}", credit);
         creditRepository.save(credit);
         logger.info("Credit saved");
+    }
+
+    /**
+     * Generate 4-digits ses code
+     * @return 4-digits ses code
+     */
+    private int generateSesCode() {
+        return 1000 + new Random().nextInt(9000);
     }
 }

@@ -1,50 +1,47 @@
 package com.sunshard.gateway.controller;
 
 import com.sunshard.gateway.client.DealFeignClient;
-import com.sunshard.gateway.model.ApplicationDTO;
 import com.sunshard.gateway.model.FinishRegistrationRequestDTO;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class DealController {
+public class DealController implements DealAPI {
 
     private final DealFeignClient dealFeignClient;
 
-    @GetMapping("/deal/admin/application/{applicationId}")
-    ResponseEntity<ApplicationDTO> getApplicationById(@PathVariable Long applicationId) {
-        return dealFeignClient.getApplicationById(applicationId);
+    private static final Logger logger = LogManager.getLogger(DealController.class.getName());
+
+    @Override
+    public ResponseEntity<Void> calculateCreditData(
+            Long applicationId,
+            FinishRegistrationRequestDTO finishRegistrationRequest
+    ) {
+        logger.info("Calculating credit data for application {}, scoring data:\n{}",
+                applicationId, finishRegistrationRequest
+        );
+        return dealFeignClient.calculateCreditData(applicationId, finishRegistrationRequest);
     }
 
-    @GetMapping("/deal/admin/application")
-    ResponseEntity<List<ApplicationDTO>> getAllApplications() {
-        return dealFeignClient.getAllApplications();
-    }
-
-    @PostMapping("/deal/document/{applicationId}/send")
-    ResponseEntity<Void> sendDocuments(@PathVariable Long applicationId) {
+    @Override
+    public ResponseEntity<Void> sendDocuments(Long applicationId) {
+        logger.info("Sending documents for application {}", applicationId);
         return dealFeignClient.sendDocuments(applicationId);
     }
 
-    @PostMapping("/deal/document/{applicationId}/sign")
-    ResponseEntity<Void> signRequest(@PathVariable Long applicationId) {
+    @Override
+    public ResponseEntity<Void> signRequest(Long applicationId) {
+        logger.info("Sending sign documents request for application {}", applicationId);
         return dealFeignClient.signRequest(applicationId);
     }
 
-    @PostMapping("/deal/document/{applicationId}/code")
-    ResponseEntity<Void> signDocuments(@PathVariable Long applicationId, @RequestBody Integer sesCode) {
+    @Override
+    public ResponseEntity<Void> signDocuments(Long applicationId, Integer sesCode) {
+        logger.info("Signing documents with ses code");
         return dealFeignClient.signDocuments(applicationId, sesCode);
-    }
-
-    @PutMapping("/deal/calculate/{applicationId}")
-    ResponseEntity<Void> calculateCreditData(
-            @PathVariable Long applicationId,
-            @RequestBody FinishRegistrationRequestDTO finishRegistrationRequest
-    ) {
-        return dealFeignClient.calculateCreditData(applicationId, finishRegistrationRequest);
     }
 }
