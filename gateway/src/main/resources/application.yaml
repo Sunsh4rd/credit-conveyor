@@ -1,0 +1,7 @@
+server:
+  port: 8080
+
+conveyor-address: localhost:8081
+deal-address: localhost:8082
+application-address: localhost:8083
+dossier-address: localhost:8084

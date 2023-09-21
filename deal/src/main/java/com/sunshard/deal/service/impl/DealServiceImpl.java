@@ -14,14 +14,15 @@ import com.sunshard.deal.model.*;
 import com.sunshard.deal.model.enums.ApplicationStatus;
 import com.sunshard.deal.model.enums.ChangeType;
 import com.sunshard.deal.model.enums.CreditStatus;
+import com.sunshard.deal.model.enums.Theme;
 import com.sunshard.deal.repository.ApplicationRepository;
 import com.sunshard.deal.repository.ClientRepository;
 import com.sunshard.deal.repository.CreditRepository;
 import com.sunshard.deal.service.DealService;
+import com.sunshard.deal.service.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.context.ApplicationContextException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +46,7 @@ public class DealServiceImpl implements DealService {
     private final ApplicationMapper applicationMapper;
     private final ScoringDataMapper scoringDataMapper;
     private final CreditConveyorFeignClient creditConveyorFeignClient;
+    private final KafkaProducerService producer;
     private static final Logger logger = LogManager.getLogger(DealServiceImpl.class.getName());
 
     /**
@@ -95,6 +97,12 @@ public class DealServiceImpl implements DealService {
         );
         applicationDTO.setStatusHistory(statusHistory);
         applicationDTO.setAppliedOffer(loanOffer);
+        EmailMessage message = EmailMessage.builder()
+                .address(applicationDTO.getClient().getEmail())
+                .theme(Theme.FINISH_REGISTRATION)
+                .applicationId(applicationDTO.getApplicationId())
+                .build();
+        producer.sendMessage(Theme.FINISH_REGISTRATION, message);
         saveApplication(applicationMapper.dtoToEntity(applicationDTO));
     }
 
@@ -115,8 +123,14 @@ public class DealServiceImpl implements DealService {
         Credit credit = creditMapper.dtoToEntity(creditDTO);
         credit.setCreditStatus(CreditStatus.CALCULATED);
         application.setCredit(credit);
+        EmailMessage message = EmailMessage.builder()
+                .address(application.getClient().getEmail())
+                .theme(Theme.CREATE_DOCUMENTS)
+                .applicationId(applicationId)
+                .build();
         saveCreditData(credit);
         saveApplication(application);
+        producer.sendMessage(Theme.CREATE_DOCUMENTS, message);
     }
 
     /**
@@ -162,7 +176,7 @@ public class DealServiceImpl implements DealService {
      * Find <i>application</i> by the provided <i>id</i>
      * @param id provided id
      * @return found application
-     * @throws IllegalArgumentException if no application was found
+     * @throws ApplicationNotFoundException if no application was found
      * @see Application
      */
     private Application getApplicationById(Long id) {

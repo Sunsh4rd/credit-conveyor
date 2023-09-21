@@ -202,3 +202,196 @@ PUT /deal/calculate/{applicationId}
 ```http
 HTTP status
 ```
+
+### Get a loan offer by id
+
+```http
+GET /deal/admin/application/{applicationId}
+```
+
+**Path parameter**
+
+```http
+applicationId
+```
+
+**Response**
+
+```json
+
+```
+
+### Get all loan offers
+
+```http
+GET /deal/admin/application
+```
+
+**Response**
+
+```json
+
+```
+
+## API Gateway microservice
+
+### Applying for loan
+
+```http
+POST /application
+```
+
+**Request body:**
+
+```json
+{
+  "amount": 300000, 
+  "term": 18, 
+  "firstName": "Moses", 
+  "lastName": "Jackson", 
+  "middleName": "Fitzgerald",
+  "email": "your@mail.com", 
+  "birthdate": "2004-08-04", 
+  "passportSeries": "6020", 
+  "passportNumber": "425513"
+}
+```
+
+**Response body:**
+
+```json
+[
+  {
+    "applicationId": 1,
+    "requestedAmount": 300000,
+    "totalAmount": 448000,
+    "term": 18,
+    "monthlyPayment": 18000,
+    "rate": 11,
+    "isInsuranceEnabled": true,
+    "isSalaryClient": true
+  }
+]
+```
+
+### Applying certain loan offer
+
+```http
+PUT /deal/offer
+```
+
+**Request body:**
+
+```json
+{
+  "applicationId": 11,
+  "requestedAmount": 300000,
+  "totalAmount": 439070.76,
+  "term": 18,
+  "monthlyPayment": 24392.82,
+  "rate": 12,
+  "isInsuranceEnabled": true,
+  "isSalaryClient": false
+}
+```
+
+**Response**
+
+```http
+HTTP status
+```
+
+### Calculate credit data
+
+```http
+PUT /deal/calculate/{applicationId}
+```
+
+**Request body:**
+
+```json
+{
+  "gender": "MALE",
+  "maritalStatus": "SINGLE",
+  "dependentAmount": 3,
+  "passportIssueDate": "2020-09-12",
+  "passportIssueBranch": "Issue branch number 5",
+  "employment": {
+    "employmentStatus": "SELF_EMPLOYED",
+    "employerINN": "012345678987",
+    "salary": 50000,
+    "position": "TOP_MANAGER",
+    "workExperienceTotal": 12,
+    "workExperienceCurrent": 5
+  },
+  "account": "98765432100123456789"
+}
+```
+
+**Response**
+
+```http
+HTTP status
+```
+
+### Send an email with creating documents request
+
+```http
+POST /deal/document/{applicationId}/send
+```
+
+**Path parameter**
+
+```http
+applicationId
+```
+
+**Response**
+
+```http
+HTTP status
+```
+
+### Send an email with signing documents request
+
+```http
+POST /deal/document/{applicationId}/sign
+```
+
+**Path parameter**
+
+```http
+applicationId
+```
+
+**Response**
+
+```http
+HTTP status
+```
+
+### Signing documents with received ses code
+
+```http
+POST /deal/document/{applicationId}/code
+```
+
+**Path parameter**
+
+```http
+applicationId
+```
+
+**Request body:**
+
+```json
+{
+  "sesCode" : 1234
+}
+```
+
+**Response**
+
+```http
+HTTP status
+```
