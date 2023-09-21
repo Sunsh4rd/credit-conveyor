@@ -17,8 +17,8 @@ import java.util.List;
 public interface ApplicationFeignClient {
 
     @PostMapping("/application")
-    ResponseEntity<List<LoanOfferDTO>> createLoanOffers(@Valid @RequestBody LoanApplicationRequestDTO request);
+    ResponseEntity<List<LoanOfferDTO>> createLoanOffers(@RequestBody LoanApplicationRequestDTO request);
 
     @PutMapping("/application/offer")
-    ResponseEntity<Void> applyLoanOffer(@Valid @RequestBody LoanOfferDTO loanOffer);
+    ResponseEntity<Void> applyLoanOffer(@RequestBody LoanOfferDTO loanOffer);
 }
