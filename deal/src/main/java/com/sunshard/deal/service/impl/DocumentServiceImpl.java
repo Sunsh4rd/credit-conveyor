@@ -4,8 +4,6 @@ import com.sunshard.deal.entity.Application;
 import com.sunshard.deal.entity.Client;
 import com.sunshard.deal.entity.Credit;
 import com.sunshard.deal.exception.ApplicationNotFoundException;
-import com.sunshard.deal.mapper.ApplicationMapper;
-import com.sunshard.deal.mapper.CreditMapper;
 import com.sunshard.deal.model.ApplicationStatusHistoryDTO;
 import com.sunshard.deal.model.EmailMessage;
 import com.sunshard.deal.model.enums.ApplicationStatus;
@@ -36,8 +34,6 @@ public class DocumentServiceImpl implements DocumentService {
     private final KafkaProducerImpl producer;
     private final ApplicationRepository applicationRepository;
     private final CreditRepository creditRepository;
-    private final ApplicationMapper applicationMapper;
-    private final CreditMapper creditMapper;
 
     private static final Logger logger = LogManager.getLogger(DocumentServiceImpl.class.getName());
 

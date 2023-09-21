@@ -46,7 +46,7 @@ public class KafkaConsumer {
         emailService.sendMessage(
                 message.getAddress(),
                 message.getTheme().getName(),
-                "Finish registration for application " + message.getApplicationId() + " by the following link: http://localhost:8080/swagger-ui/index.html#/deal-controller/calculateCreditData"
+                "Finish registration for application " + message.getApplicationId() + " by the following link: http://localhost:8080/swagger-ui/index.html#/Deal/calculateCreditData"
         );
     }
 
@@ -68,7 +68,7 @@ public class KafkaConsumer {
                 message.getTheme().getName(),
                 "Now send creating documents request for application "
                         + message.getApplicationId()
-                        + " by the following link: http://localhost:8080/swagger-ui/index.html#/deal-controller/sendDocuments"
+                        + " by the following link: http://localhost:8080/swagger-ui/index.html#/Deal/sendDocuments"
         );
     }
 
@@ -106,7 +106,7 @@ public class KafkaConsumer {
                 message.getTheme().getName(),
                 "Your documents are ready and attached to this email. Now send signing documents request for application "
                         + message.getApplicationId()
-                        + " by the following link: http://localhost:8080/swagger-ui/index.html#/deal-controller/signRequest",
+                        + " by the following link: http://localhost:8080/swagger-ui/index.html#/Deal/signRequest",
                 "docs" + message.getApplicationId()
         );
     }
@@ -130,7 +130,7 @@ public class KafkaConsumer {
                 message.getTheme().getName(),
                 "Now provide your SES code " + sesCode + " for application "
                         + message.getApplicationId()
-                        + " by the following link: http://localhost:8080/swagger-ui/index.html#/deal-controller/signDocuments"
+                        + " by the following link: http://localhost:8080/swagger-ui/index.html#/Deal/signDocuments"
         );
     }
 

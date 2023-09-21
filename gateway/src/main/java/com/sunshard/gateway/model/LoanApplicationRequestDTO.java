@@ -1,6 +1,5 @@
 package com.sunshard.gateway.model;
 
-import com.sunshard.gateway.validator.BirthDate;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -70,7 +69,6 @@ public class LoanApplicationRequestDTO {
     private String email;
 
     @NotNull
-    @BirthDate
     @Schema(
             type = "string",
             format = "date",

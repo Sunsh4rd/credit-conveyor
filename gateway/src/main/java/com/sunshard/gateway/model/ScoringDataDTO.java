@@ -2,7 +2,6 @@ package com.sunshard.gateway.model;
 
 import com.sunshard.gateway.model.enums.Gender;
 import com.sunshard.gateway.model.enums.MaritalStatus;
-import com.sunshard.gateway.validator.BirthDate;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -68,7 +67,6 @@ public class ScoringDataDTO {
     private Gender gender;
 
     @NotNull
-    @BirthDate
     @Schema(
             type = "string",
             format = "date",
