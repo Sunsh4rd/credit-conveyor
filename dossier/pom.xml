@@ -90,6 +90,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>dossier</finalName>
 	</build>
 
 </project>

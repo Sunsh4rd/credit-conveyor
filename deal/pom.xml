@@ -142,6 +142,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>deal</finalName>
 	</build>
 
 </project>

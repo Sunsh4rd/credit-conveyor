@@ -1,6 +1,50 @@
 version: '3'
 
 services:
+
+  conveyor:
+    build: ./conveyor
+    container_name: conveyor
+    ports:
+      - "8081:8081"
+
+  deal:
+    build: ./deal
+    container_name: deal
+    ports:
+      - "8082:8082"
+    environment:
+      conveyor-address: conveyor:8081
+      KAFKA_PRODUCER_BOOTSTRAP_SERVERS: kafka:9092
+
+  application:
+    build: ./application
+    container_name: application
+    ports:
+      - "8083:8083"
+    environment:
+      deal-address: deal:8082
+
+  dossier:
+    build: ./dossier
+    container_name: dossier
+    ports:
+      - "8084:8084"
+    environment:
+      deal-address: deal:8082
+      KAFKA_CONSUMER_BOOTSTRAP_SERVERS: kafka:9092
+
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    environment:
+      conveyor-address: conveyor:8081
+      deal-address: deal:8082
+      application-address: application:8083
+      dossier-address: dossier:8084
+
   zookeeper:
     image: wurstmeister/zookeeper
     container_name: zookeeper
@@ -16,13 +60,14 @@ services:
     container_name: kafka
     ports:
       - "9092:9092"
+    depends_on:
+      - zookeeper
+    hostname: kafka
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ADVERTISED_HOST_NAME: kafka
 #      KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
 #      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
 #      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: true
       KAFKA_CREATE_TOPICS: "finish-registration:1:1,create-documents:1:1,send-documents:1:1,send-ses:1:1,credit-issued:1:1,application-denied:1:1"
-    depends_on:
-      - zookeeper
