@@ -341,6 +341,18 @@ class ScoringServiceImplTest {
         assertEquals(18, paymentSchedule.size());
     }
 
+//    @Test
+//    @Disabled
+//    void calculatePaymentSchedule_correctRemainingDebt() {
+//        List<PaymentScheduleElement> paymentSchedule = scoringService.calculatePaymentSchedule(
+//                BigDecimal.valueOf(450000),
+//                24,
+//                BigDecimal.valueOf(10),
+//                BigDecimal.valueOf(20765.2185)
+//        );
+//        assertEquals(0, BigDecimal.valueOf(381117.1330).compareTo(paymentSchedule.get(3).getRemainingDebt()));
+//    }
+
     @Test
     void calculatePsk_1() {
         List<PaymentScheduleElement> paymentSchedule = scoringService.calculatePaymentSchedule(

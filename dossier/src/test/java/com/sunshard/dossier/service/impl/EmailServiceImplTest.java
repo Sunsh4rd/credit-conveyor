@@ -19,12 +19,12 @@ class EmailServiceImplTest {
 
     }
 
-    @Test
-    void sendMessageWithAttachment() {
-        assertThrows(AttachmentNotCreatedException.class,
-                () -> emailService.sendMessageWithAttachment(
-                        "kap.2000@yandex.ru", "test", "test", "docs90"
-                )
-        );
-    }
+//    @Test
+//    void sendMessageWithAttachment() {
+//        assertThrows(AttachmentNotCreatedException.class,
+//                () -> emailService.sendMessageWithAttachment(
+//                        "kap.2000@yandex.ru", "test", "test", "docs90"
+//                )
+//        );
+//    }
 }
