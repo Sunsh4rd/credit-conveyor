@@ -44,7 +44,7 @@ jobs:
         with:
           java-version: 11
       - name:  Upload coverage reports to Codecov
-        run: mvn -f ./conveyor/pom.xml -B clean test && mvn -f ./deal/pom.xml -B clean test && mvn -f ./application/pom.xml -B clean test && mvn -f ./dossier/pom.xml -B clean test && mvn -f ./gateway/pom.xml -B clean test
+        run: mvn -f ./conveyor/pom.xml -B clean verify && mvn -f ./deal/pom.xml -B clean verify && mvn -f ./application/pom.xml -B clean verify && mvn -f ./dossier/pom.xml -B clean verify && mvn -f ./gateway/pom.xml -B clean verify
       - name: Test Coverage
         uses: codecov/codecov-action@v3
         with:
