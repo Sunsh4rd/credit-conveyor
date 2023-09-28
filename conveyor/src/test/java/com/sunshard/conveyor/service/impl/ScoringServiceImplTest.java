@@ -376,4 +376,9 @@ class ScoringServiceImplTest {
         assertEquals(0, BigDecimal.valueOf(9.519).compareTo(
                 scoringService.calculatePsk(paymentSchedule, BigDecimal.valueOf(1500000))));
     }
+
+    @Test
+    void sum_test() {
+        assertEquals(4, 2 + 2);
+    }
 }
