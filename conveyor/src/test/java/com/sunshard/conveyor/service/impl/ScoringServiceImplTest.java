@@ -8,7 +8,6 @@ import com.sunshard.conveyor.model.enums.EmploymentStatus;
 import com.sunshard.conveyor.model.enums.Gender;
 import com.sunshard.conveyor.model.enums.MaritalStatus;
 import com.sunshard.conveyor.model.enums.Position;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -340,18 +339,6 @@ class ScoringServiceImplTest {
         );
         assertEquals(18, paymentSchedule.size());
     }
-
-//    @Test
-//    @Disabled
-//    void calculatePaymentSchedule_correctRemainingDebt() {
-//        List<PaymentScheduleElement> paymentSchedule = scoringService.calculatePaymentSchedule(
-//                BigDecimal.valueOf(450000),
-//                24,
-//                BigDecimal.valueOf(10),
-//                BigDecimal.valueOf(20765.2185)
-//        );
-//        assertEquals(0, BigDecimal.valueOf(381117.1330).compareTo(paymentSchedule.get(3).getRemainingDebt()));
-//    }
 
     @Test
     void calculatePsk_1() {

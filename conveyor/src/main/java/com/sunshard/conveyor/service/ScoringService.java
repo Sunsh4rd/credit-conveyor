@@ -1,6 +1,5 @@
 package com.sunshard.conveyor.service;
 
-import com.sunshard.conveyor.exception.CreditDeniedException;
 import com.sunshard.conveyor.model.EmploymentDTO;
 import com.sunshard.conveyor.model.PaymentScheduleElement;
 import com.sunshard.conveyor.model.ScoringDataDTO;
