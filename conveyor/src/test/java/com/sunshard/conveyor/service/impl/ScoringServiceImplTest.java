@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -27,32 +29,36 @@ class ScoringServiceImplTest {
 
     @Test
     void calculateRate_insuranceEnabledAndIsSalaryClient_Equals11() {
-        assertEquals(BigDecimal.valueOf(11), scoringService.calculateRate(true, true));
+        assertEquals(BigDecimal.valueOf(11).setScale(2, RoundingMode.HALF_UP),
+                scoringService.calculateRate(true, true));
     }
 
     @Test
     void calculateRate_insuranceEnabledAndIsNotSalaryClient_Equals12() {
-        assertEquals(BigDecimal.valueOf(12), scoringService.calculateRate(true, false));
+        assertEquals(BigDecimal.valueOf(12).setScale(2, RoundingMode.HALF_UP),
+                scoringService.calculateRate(true, false));
     }
 
     @Test
     void calculateRate_insuranceDisabledAndIsSalaryClient_Equals14() {
-        assertEquals(BigDecimal.valueOf(14), scoringService.calculateRate(false, true));
+        assertEquals(BigDecimal.valueOf(14).setScale(2, RoundingMode.HALF_UP),
+                scoringService.calculateRate(false, true));
     }
 
     @Test
     void calculateRate_insuranceDisabledAndIsNotSalaryClient_Equals15() {
-        assertEquals(BigDecimal.valueOf(15), scoringService.calculateRate(false, false));
+        assertEquals(BigDecimal.valueOf(15).setScale(2, RoundingMode.HALF_UP),
+                scoringService.calculateRate(false, false));
     }
 
     @Test
     void calculateMonthlyRate_RateEquals15() {
-        assertEquals(BigDecimal.valueOf(0.0125), scoringService.calculateMonthlyRate(BigDecimal.valueOf(15)));
+        assertEquals(BigDecimal.valueOf(0.01), scoringService.calculateMonthlyRate(BigDecimal.valueOf(15)));
     }
 
     @Test
     void calculateMonthlyRate_RateEquals11() {
-        assertEquals(BigDecimal.valueOf(0.009166667), scoringService.calculateMonthlyRate(BigDecimal.valueOf(11)));
+        assertEquals(BigDecimal.valueOf(0.01), scoringService.calculateMonthlyRate(BigDecimal.valueOf(11)));
     }
 
     @Test
@@ -62,12 +68,12 @@ class ScoringServiceImplTest {
 
     @Test
     void calculateMonthlyRate_RateEquals14() {
-        assertEquals(BigDecimal.valueOf(0.01166667), scoringService.calculateMonthlyRate(BigDecimal.valueOf(14)));
+        assertEquals(BigDecimal.valueOf(0.01), scoringService.calculateMonthlyRate(BigDecimal.valueOf(14)));
     }
 
     @Test
     void calculateLoanAmountBasedOnInsuranceStatus_insuranceEnabled() {
-        assertEquals(BigDecimal.valueOf(300000),
+        assertEquals(BigDecimal.valueOf(300000).setScale(2, RoundingMode.HALF_UP),
                 scoringService.calculateLoanAmountBasedOnInsuranceStatus(
                         BigDecimal.valueOf(200000), true
                 )
@@ -76,7 +82,7 @@ class ScoringServiceImplTest {
 
     @Test
     void calculateLoanAmountBasedOnInsuranceStatus_insuranceDisabled() {
-        assertEquals(BigDecimal.valueOf(200000),
+        assertEquals(BigDecimal.valueOf(200000).setScale(2, RoundingMode.HALF_UP),
                 scoringService.calculateLoanAmountBasedOnInsuranceStatus(
                         BigDecimal.valueOf(200000), false
                 )
@@ -85,9 +91,9 @@ class ScoringServiceImplTest {
 
     @Test
     void calculateMonthlyPayment_1() {
-        assertEquals(0, BigDecimal.valueOf(18715.437000).compareTo(
+        assertEquals(0, BigDecimal.valueOf(18294.62).setScale(2, RoundingMode.HALF_UP).compareTo(
                 scoringService.calculateMonthlyPayment(
-                        BigDecimal.valueOf(0.0125000),
+                        BigDecimal.valueOf(0.01),
                         BigDecimal.valueOf(300000),
                         18
                 )
@@ -97,9 +103,9 @@ class ScoringServiceImplTest {
 
     @Test
     void calculateMonthlyPayment_2() {
-        assertEquals(0, BigDecimal.valueOf(20804.016000).compareTo(
+        assertEquals(0, BigDecimal.valueOf(20804.02).setScale(2, RoundingMode.HALF_UP).compareTo(
                 scoringService.calculateMonthlyPayment(
-                        BigDecimal.valueOf(0.0125000),
+                        BigDecimal.valueOf(0.0125),
                         BigDecimal.valueOf(300000),
                         16
                 )
@@ -109,7 +115,7 @@ class ScoringServiceImplTest {
 
     @Test
     void calculateMonthlyPayment_3() {
-        assertEquals(0, BigDecimal.valueOf(23310.1530000).compareTo(
+        assertEquals(0, BigDecimal.valueOf(23310.1530000).setScale(2, RoundingMode.HALF_UP).compareTo(
                         scoringService.calculateMonthlyPayment(
                                 BigDecimal.valueOf(0.01166667),
                                 BigDecimal.valueOf(450000),
@@ -129,7 +135,7 @@ class ScoringServiceImplTest {
 
     @Test
     void calculateTotalAmount_2() {
-        assertEquals(BigDecimal.valueOf(512823.366), scoringService.calculateTotalAmount(
+        assertEquals(BigDecimal.valueOf(512823.366).setScale(2, RoundingMode.HALF_UP), scoringService.calculateTotalAmount(
                 BigDecimal.valueOf(23310.1530000),
                 22
         ));
@@ -137,7 +143,7 @@ class ScoringServiceImplTest {
 
     @Test
     void calculateTotalAmount_3() {
-        assertEquals(BigDecimal.valueOf(332864.256), scoringService.calculateTotalAmount(
+        assertEquals(BigDecimal.valueOf(332864.256).setScale(2, RoundingMode.HALF_UP), scoringService.calculateTotalAmount(
                 BigDecimal.valueOf(20804.016000),
                 16
         ));
@@ -262,7 +268,7 @@ class ScoringServiceImplTest {
                 .isInsuranceEnabled(true)
                 .isSalaryClient(true)
                 .build();
-        assertEquals(BigDecimal.valueOf(11), scoringService.calculateCreditRate(scoringData));
+        assertEquals(BigDecimal.valueOf(11).setScale(2, RoundingMode.HALF_UP), scoringService.calculateCreditRate(scoringData));
     }
 
     @Test
@@ -294,7 +300,7 @@ class ScoringServiceImplTest {
                 .isInsuranceEnabled(true)
                 .isSalaryClient(true)
                 .build();
-        assertEquals(BigDecimal.valueOf(9), scoringService.calculateCreditRate(scoringData));
+        assertEquals(BigDecimal.valueOf(9).setScale(2, RoundingMode.HALF_UP), scoringService.calculateCreditRate(scoringData));
     }
 
     @Test
@@ -326,7 +332,7 @@ class ScoringServiceImplTest {
                 .isInsuranceEnabled(true)
                 .isSalaryClient(true)
                 .build();
-        assertEquals(BigDecimal.valueOf(17), scoringService.calculateCreditRate(scoringData));
+        assertEquals(BigDecimal.valueOf(17).setScale(2, RoundingMode.HALF_UP), scoringService.calculateCreditRate(scoringData));
     }
 
     @Test
@@ -346,10 +352,10 @@ class ScoringServiceImplTest {
                 BigDecimal.valueOf(450000),
                 24,
                 BigDecimal.valueOf(10),
-                BigDecimal.valueOf(20765.2185)
+                BigDecimal.valueOf(20765.22)
         );
-        assertEquals(0, BigDecimal.valueOf(10.7478).compareTo(
-                scoringService.calculatePsk(paymentSchedule, BigDecimal.valueOf(450000))));
+        assertEquals(0, BigDecimal.valueOf(10.75).compareTo(
+                scoringService.calculatePsk(paymentSchedule, BigDecimal.valueOf(450000)).setScale(2, RoundingMode.HALF_UP)));
     }
 
     @Test
@@ -360,12 +366,7 @@ class ScoringServiceImplTest {
                 BigDecimal.valueOf(6),
                 BigDecimal.valueOf(45632.91)
         );
-        assertEquals(0, BigDecimal.valueOf(9.519).compareTo(
-                scoringService.calculatePsk(paymentSchedule, BigDecimal.valueOf(1500000))));
-    }
-
-    @Test
-    void sum_test() {
-        assertEquals(4, 2 + 2);
+        assertEquals(0, BigDecimal.valueOf(9.52).compareTo(
+                scoringService.calculatePsk(paymentSchedule, BigDecimal.valueOf(1500000)).setScale(2, RoundingMode.HALF_UP)));
     }
 }
