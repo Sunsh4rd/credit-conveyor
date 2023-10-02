@@ -2,9 +2,11 @@ package com.sunshard.deal.service.impl;
 
 import com.sunshard.deal.exception.ApplicationNotFoundException;
 import com.sunshard.deal.model.LoanOfferDTO;
+import com.sunshard.deal.repository.ApplicationRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
@@ -16,6 +18,9 @@ class DealServiceImplTest {
 
     @InjectMocks
     DealServiceImpl dealService;
+
+    @Mock
+    ApplicationRepository applicationRepository;
 
     @Test
     void applyLoanOffer_throwsApplicationNotFoundException() {
