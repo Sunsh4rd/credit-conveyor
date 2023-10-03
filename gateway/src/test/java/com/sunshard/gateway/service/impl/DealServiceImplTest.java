@@ -1,8 +1,7 @@
-package com.sunshard.gateway.controller;
+package com.sunshard.gateway.service.impl;
 
+import com.sunshard.gateway.client.DealFeignClient;
 import com.sunshard.gateway.model.FinishRegistrationRequestDTO;
-import com.sunshard.gateway.model.LoanOfferDTO;
-import com.sunshard.gateway.service.impl.DealServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,40 +12,38 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class DealControllerTest {
+class DealServiceImplTest {
 
     @InjectMocks
-    DealController dealController;
-
-    @Mock
     DealServiceImpl dealService;
 
+    @Mock
+    DealFeignClient dealFeignClient;
+
     @Test
-    void calculateCreditData_success_success() {
+    void calculateCreditData_success() {
         FinishRegistrationRequestDTO finishRegistrationRequest = FinishRegistrationRequestDTO.builder().build();
-        dealController.calculateCreditData(160L, finishRegistrationRequest);
-        Mockito.verify(dealService, Mockito.times(1))
+        dealService.calculateCreditData(160L, finishRegistrationRequest);
+        Mockito.verify(dealFeignClient, Mockito.times(1))
                 .calculateCreditData(160L, finishRegistrationRequest);
     }
 
     @Test
     void sendDocuments_success() {
-        dealController.sendDocuments(160L);
-        Mockito.verify(dealService, Mockito.times(1))
-                .sendDocuments(160L);
+        dealService.sendDocuments(160L);
+        Mockito.verify(dealFeignClient, Mockito.times(1)).sendDocuments(160L);
     }
 
     @Test
     void signRequest_success() {
-        dealController.signRequest(160L);
-        Mockito.verify(dealService, Mockito.times(1))
-                .signRequest(160L);
+        dealService.signRequest(160L);
+        Mockito.verify(dealFeignClient, Mockito.times(1)).signRequest(160L);
     }
 
     @Test
     void signDocuments_success() {
-        dealController.signDocuments(160L, 1234);
-        Mockito.verify(dealService, Mockito.times(1))
+        dealService.signDocuments(160L, 1234);
+        Mockito.verify(dealFeignClient, Mockito.times(1))
                 .signDocuments(160L, 1234);
     }
 }

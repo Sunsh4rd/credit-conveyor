@@ -6,5 +6,4 @@ RUN mvn -f /app/pom.xml clean package -Dmaven.test.skip=true
 FROM openjdk:11
 WORKDIR /app
 COPY --from=builder /app/target/*.jar /app/*.jar
-#EXPOSE 8083
 ENTRYPOINT ["java", "-jar", "/app/*.jar"]

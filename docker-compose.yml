@@ -1,11 +1,5 @@
 version: '3.9'
 
-#networks:
-#
-#  kafka-net:
-#    name: kafka-net
-#    driver: bridge
-
 services:
 
   conveyor:
@@ -13,8 +7,6 @@ services:
     container_name: conveyor
     ports:
       - "8081:8081"
-#    networks:
-#      - kafka-net
 
   deal:
     build: ./deal
@@ -26,8 +18,6 @@ services:
     environment:
       conveyor-address: conveyor:8081
       SPRING_KAFKA_PRODUCER_BOOTSTRAP_SERVERS: kafka:9092
-#    networks:
-#      - kafka-net
 
   application:
     build: ./application
@@ -36,8 +26,6 @@ services:
       - "8083:8083"
     environment:
       deal-address: deal:8082
-#    networks:
-#      - kafka-net
 
   dossier:
     build: ./dossier
@@ -49,8 +37,6 @@ services:
     environment:
       deal-address: deal:8082
       SPRING_KAFKA_CONSUMER_BOOTSTRAP_SERVERS: kafka:9092
-#    networks:
-#      - kafka-net
 
   gateway:
     build: ./gateway
@@ -62,8 +48,6 @@ services:
       deal-address: deal:8082
       application-address: application:8083
       dossier-address: dossier:8084
-#    networks:
-#      - kafka-net
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -74,9 +58,6 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-    #      ALLOW_ANONYMOUS_LOGIN: yes
-#    networks:
-#      - kafka-net
 
   kafka:
     image: confluentinc/cp-kafka:latest
@@ -93,13 +74,3 @@ services:
       KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-#      KAFKA_AUTO_CREATE_TOPICS_ENABLE: true
-#      KAFKA_CREATE_TOPICS: "finish-registration:1:1,create-documents:1:1,send-documents:1:1,send-ses:1:1,credit-issued:1:1,application-denied:1:1"
-
-#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: DOCKER_INTERNAL:PLAINTEXT,DOCKER_EXTERNAL:PLAINTEXT
-#      KAFKA_LISTENERS: DOCKER_INTERNAL://:29092,DOCKER_EXTERNAL://:9092
-#      KAFKA_ADVERTISED_LISTENERS: DOCKER_INTERNAL://kafka:29092,DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
-#      KAFKA_INTER_BROKER_LISTENER_NAME: DOCKER_INTERNAL
-#    networks:
-#      - kafka-net
-#    hostname: kafka
