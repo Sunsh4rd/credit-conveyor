@@ -3,7 +3,6 @@ package com.sunshard.deal.entity;
 import com.sunshard.deal.model.PaymentScheduleElement;
 import com.sunshard.deal.model.enums.CreditStatus;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;

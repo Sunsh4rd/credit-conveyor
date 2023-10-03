@@ -50,7 +50,8 @@ public class ScoringServiceImpl implements ScoringService {
     public BigDecimal calculateRate(Boolean isInsuranceEnabled, Boolean isSalaryClient) {
         BigDecimal currentRate = basicRate;
         BigDecimal rate = isInsuranceEnabled ? currentRate.subtract(THREE_PERCENT) : currentRate;
-        return isSalaryClient ? rate.subtract(BigDecimal.ONE) : rate;
+        return isSalaryClient ? rate.subtract(BigDecimal.ONE).setScale(2, RoundingMode.HALF_UP)
+                              : rate.setScale(2, RoundingMode.HALF_UP);
     }
 
     /**
@@ -61,7 +62,7 @@ public class ScoringServiceImpl implements ScoringService {
      */
     @Override
     public BigDecimal calculateMonthlyRate(BigDecimal rate) {
-        return rate.divide(HUNDRED_PERCENT.multiply(MONTHS_IN_YEAR), PRECISION);
+        return rate.divide(HUNDRED_PERCENT.multiply(MONTHS_IN_YEAR), PRECISION).setScale(2, RoundingMode.HALF_UP);
     }
 
     /**
@@ -79,7 +80,7 @@ public class ScoringServiceImpl implements ScoringService {
         BigDecimal denominator = BigDecimal.ONE.add(monthlyRate).pow(term).subtract(BigDecimal.ONE);
 
         BigDecimal annuityCoefficient = numerator.divide(denominator, PRECISION);
-        return annuityCoefficient.multiply(totalAmount);
+        return annuityCoefficient.multiply(totalAmount).setScale(2, RoundingMode.HALF_UP);
     }
 
     /**
@@ -90,7 +91,8 @@ public class ScoringServiceImpl implements ScoringService {
      */
     @Override
     public BigDecimal calculateLoanAmountBasedOnInsuranceStatus(BigDecimal amount, Boolean isInsuranceEnabled) {
-        return isInsuranceEnabled ? amount.add(insurancePrice) : amount;
+        return isInsuranceEnabled ? amount.add(insurancePrice).setScale(2, RoundingMode.HALF_UP)
+                                  : amount.setScale(2, RoundingMode.HALF_UP);
     }
 
     /**
@@ -102,7 +104,7 @@ public class ScoringServiceImpl implements ScoringService {
      */
     @Override
     public BigDecimal calculateTotalAmount(BigDecimal monthlyPayment, Integer term) {
-        return monthlyPayment.multiply(BigDecimal.valueOf(term));
+        return monthlyPayment.multiply(BigDecimal.valueOf(term)).setScale(2, RoundingMode.HALF_UP);
     }
 
     /**
@@ -208,7 +210,7 @@ public class ScoringServiceImpl implements ScoringService {
                 rate = rate.add(THREE_PERCENT);
                 break;
         }
-        return rate;
+        return rate.setScale(2, RoundingMode.HALF_UP);
     }
 
     /**
@@ -235,9 +237,10 @@ public class ScoringServiceImpl implements ScoringService {
             BigDecimal nextInterestPayment = remainingDebt
                     .multiply(rate).divide(HUNDRED_PERCENT, PRECISION)
                     .multiply(BigDecimal.valueOf(nextPaymentDate.lengthOfMonth()))
-                    .divide(BigDecimal.valueOf(nextPaymentDate.lengthOfYear()), PRECISION);
+                    .divide(BigDecimal.valueOf(nextPaymentDate.lengthOfYear()), PRECISION)
+                    .setScale(2, RoundingMode.HALF_UP);
             BigDecimal nextDebtPayment = monthlyPayment.subtract(nextInterestPayment);
-            remainingDebt = remainingDebt.subtract(nextDebtPayment);
+            remainingDebt = remainingDebt.subtract(nextDebtPayment).setScale(2, RoundingMode.HALF_UP);
             paymentSchedule.add(
                     PaymentScheduleElement.builder()
                             .number(i + 1)
@@ -270,6 +273,7 @@ public class ScoringServiceImpl implements ScoringService {
         return totalPayment
                 .divide(amount, PRECISION)
                 .subtract(BigDecimal.ONE)
-                .multiply(HUNDRED_PERCENT);
+                .multiply(HUNDRED_PERCENT)
+                .setScale(2, RoundingMode.HALF_UP);
     }
 }

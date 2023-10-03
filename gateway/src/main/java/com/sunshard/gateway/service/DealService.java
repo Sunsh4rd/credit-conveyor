@@ -1,7 +1,6 @@
 package com.sunshard.gateway.service;
 
 import com.sunshard.gateway.model.FinishRegistrationRequestDTO;
-import org.springframework.http.ResponseEntity;
 
 public interface DealService {
     void calculateCreditData(

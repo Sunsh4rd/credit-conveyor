@@ -1,8 +1,8 @@
 package com.sunshard.gateway.model;
 
-import com.sunshard.gateway.model.json.Passport;
 import com.sunshard.gateway.model.enums.Gender;
 import com.sunshard.gateway.model.enums.MaritalStatus;
+import com.sunshard.gateway.model.json.Passport;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
