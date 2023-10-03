@@ -1,9 +1,11 @@
 package com.sunshard.deal.service.impl;
 
+import com.sunshard.deal.entity.Application;
 import com.sunshard.deal.exception.ApplicationNotFoundException;
 import com.sunshard.deal.mapper.ApplicationMapper;
 import com.sunshard.deal.mapper.ClientMapper;
 import com.sunshard.deal.mapper.CreditMapper;
+import com.sunshard.deal.model.ApplicationDTO;
 import com.sunshard.deal.repository.ApplicationRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,22 +27,20 @@ class ClientServiceImplTest {
     @Mock
     ApplicationRepository applicationRepository;
 
-    @Mock
-    ApplicationMapper applicationMapper;
-
-    @Mock
-    CreditMapper creditMapper;
-
-    @Mock
-    ClientMapper clientMapper;
-
     @Test
-    void getCreditData() {
-//        assertThrows(ApplicationNotFoundException.class, () -> clientService.getCreditData(155L));
-//        Mockito.verify(applicationMapper, Mockito.times(1)).entityToDto(applicationRepository.findById(155L).get());
+    void getCreditData_throwsApplicationNotFoundException() {
+        assertThrows(ApplicationNotFoundException.class, () -> clientService.getCreditData(160L));
+        Mockito.verify(applicationRepository, Mockito.times(1)).findById(160L);
     }
 
     @Test
-    void getSesCode() {
+    void getSesCode_success() {
+        Mockito.when(applicationRepository.findById(160L)).thenReturn(Optional.of(Application.builder()
+                        .applicationId(160L)
+                        .sesCode("1442")
+                .build()));
+
+        assertEquals("1442", applicationRepository.findById(160L).get().getSesCode());
+        Mockito.verify(applicationRepository, Mockito.times(1)).findById(160L);
     }
 }
