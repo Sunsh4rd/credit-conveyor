@@ -1,0 +1,11 @@
+server:
+  port: 8081
+
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+
+credit:
+  basic-rate: 15
+  insurance-price: 100000

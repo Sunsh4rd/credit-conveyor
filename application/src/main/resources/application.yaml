@@ -1,0 +1,4 @@
+server:
+  port: 8083
+
+deal-address: localhost:8082
