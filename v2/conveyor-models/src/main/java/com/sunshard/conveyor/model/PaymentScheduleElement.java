@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
-@AllArgsConstructor
 @Builder
 @Schema(description = "Single payment element data")
 public class PaymentScheduleElement {

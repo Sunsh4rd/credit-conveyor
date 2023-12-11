@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @Builder
 @Schema(description = "Calculated credit data")
 public class CreditDto {

@@ -13,7 +13,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
-@AllArgsConstructor
 @Builder
 @Schema(description = "Loaner's scoring data")
 public class ScoringDataDto {

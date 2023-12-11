@@ -12,8 +12,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
 @Schema(description = "Loan application request")
 public class LoanApplicationRequestDto {

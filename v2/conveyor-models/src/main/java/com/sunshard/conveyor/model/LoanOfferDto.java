@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
 @Schema(description = "Possible loan offer")
 public class LoanOfferDto {

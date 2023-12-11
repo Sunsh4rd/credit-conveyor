@@ -11,7 +11,6 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-@AllArgsConstructor
 @Builder
 @Schema(description = "Loaner's employment data")
 public class EmploymentDto {
