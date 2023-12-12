@@ -5,27 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2def3c0-ce53-4cd0-8b85-a85df552bf1a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/sunshard/conveyor/api/core/CalculationApi.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/sunshard/conveyor/api/core/OfferApi.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/config/ApiDocumentationConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/controller/CalculationController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/controller/ConveyorExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/controller/OfferController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/service/CalculationService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/service/OfferService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/service/ScoringService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/service/impl/CalculationServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/service/impl/OfferServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/service/impl/ScoringServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../conveyor-core/src/main/resources/log4j2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/ErrorDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../conveyor-models/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-models/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/CreditDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/CreditDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/EmploymentDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/EmploymentDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/LoanApplicationRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/LoanApplicationRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/LoanOfferDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/LoanOfferDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/PaymentScheduleElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/PaymentScheduleElement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/ScoringDataDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/ScoringDataDto.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,24 +17,24 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2ZOBOvZo35T0ns8ebT1OlOyFYEj" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.conveyor-apis [clean,install].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "experimental",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/akrasnobaev/IdeaProjects/credit-conveyor/v2/conveyor-apis/src/main/java"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.conveyor-apis [clean,install].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;experimental&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/akrasnobaev/IdeaProjects/credit-conveyor/v2/conveyor-apis/src/main/java&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\akrasnobaev\IdeaProjects\credit-conveyor\v2\conveyor-apis\src\main\java" />

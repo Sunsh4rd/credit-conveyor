@@ -41,7 +41,7 @@ public class ScoringDataDto {
             description = "your first name"
     )
     @Size(min = 2, max = 30)
-    @NotEmpty
+    @NotBlank
     private String firstName;
 
     @Schema(
@@ -50,7 +50,7 @@ public class ScoringDataDto {
             description = "your last name"
     )
     @Size(min = 2, max = 30)
-    @NotEmpty
+    @NotBlank
     private String lastName;
 
     @Schema(
@@ -85,7 +85,7 @@ public class ScoringDataDto {
             description = "your passport series"
     )
     @Digits(integer = 4, fraction = 0)
-    @NotEmpty
+    @NotBlank
 //    @Pattern(regexp = "^[0-9]{4}$")
     private String passportSeries;
 
@@ -95,7 +95,7 @@ public class ScoringDataDto {
             description = "your passport number"
     )
     @Digits(integer = 6, fraction = 0)
-    @NotEmpty
+    @NotBlank
 //    @Pattern(regexp = "^[0-9]{6}$")
     private String passportNumber;
 
@@ -113,7 +113,7 @@ public class ScoringDataDto {
             example = "Issue branch number 5",
             description = "loaner's passport issue branch"
     )
-    @NotEmpty
+    @NotBlank
     private String passportIssueBranch;
 
     @Schema(
@@ -143,7 +143,7 @@ public class ScoringDataDto {
             example = "98765432100123456789",
             description = "loaner's bank account"
     )
-    @NotEmpty
+    @NotBlank
     private String account;
 
     @Schema(

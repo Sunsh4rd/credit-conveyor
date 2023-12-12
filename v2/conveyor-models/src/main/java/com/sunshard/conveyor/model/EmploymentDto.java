@@ -29,7 +29,7 @@ public class EmploymentDto {
             description = "loaner's employer INN"
     )
     @Digits(integer = 12, fraction = 0)
-    @NotEmpty
+    @NotBlank
 //    @Pattern(regexp = "^[0-9]{12}$")
     private String employerINN;
 

@@ -40,7 +40,7 @@ public class LoanApplicationRequestDto {
             description = "your first name"
     )
     @Size(min = 2, max = 30)
-    @NotEmpty
+    @NotBlank
     private String firstName;
 
     @Schema(
@@ -49,7 +49,7 @@ public class LoanApplicationRequestDto {
             description = "your last name"
     )
     @Size(min = 2, max = 30)
-    @NotEmpty
+    @NotBlank
     private String lastName;
 
     @Schema(
@@ -65,7 +65,7 @@ public class LoanApplicationRequestDto {
             example = "your@mail.com",
             description = "your email"
     )
-    @NotEmpty
+    @NotBlank
     @Email(regexp = "^[\\w.]{2,50}@[\\w.]{2,20}$")
     private String email;
 
@@ -86,7 +86,7 @@ public class LoanApplicationRequestDto {
     )
 //    @Pattern(regexp = "^[0-9]{4}$")
     @Digits(integer = 4, fraction = 0)
-    @NotEmpty
+    @NotBlank
     private String passportSeries;
 
     @Schema(
@@ -96,7 +96,7 @@ public class LoanApplicationRequestDto {
     )
 //    @Pattern(regexp = "^[0-9]{6}$")
     @Digits(integer = 6, fraction = 0)
-    @NotEmpty
+    @NotBlank
     private String passportNumber;
 
 }
