@@ -5,7 +5,6 @@ import com.sunshard.conveyor.model.enums.MaritalStatus;
 import com.sunshard.conveyor.model.validation.BirthDate;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 

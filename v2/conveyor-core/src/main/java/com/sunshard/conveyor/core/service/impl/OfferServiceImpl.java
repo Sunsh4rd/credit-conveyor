@@ -1,9 +1,9 @@
 package com.sunshard.conveyor.core.service.impl;
 
-import com.sunshard.conveyor.core.service.OfferService;
-import com.sunshard.conveyor.core.service.ScoringService;
 import com.sunshard.conveyor.model.LoanApplicationRequestDto;
 import com.sunshard.conveyor.model.LoanOfferDto;
+import com.sunshard.conveyor.core.service.OfferService;
+import com.sunshard.conveyor.core.service.ScoringService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;

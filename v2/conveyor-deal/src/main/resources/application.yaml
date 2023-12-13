@@ -1,0 +1,18 @@
+server:
+  port: 8082
+
+spring:
+  liquibase:
+    enabled: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/cc_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect

@@ -3,8 +3,10 @@ package com.sunshard.conveyor.model;
 import com.sunshard.conveyor.model.enums.EmploymentStatus;
 import com.sunshard.conveyor.model.enums.Position;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Builder;
 import lombok.Data;
 

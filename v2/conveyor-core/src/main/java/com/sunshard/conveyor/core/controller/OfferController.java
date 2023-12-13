@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -21,7 +22,11 @@ public class OfferController implements OfferApi {
 
     @Override
     public ResponseEntity<List<LoanOfferDto>> createLoanOffers(@Valid LoanApplicationRequestDto request) {
-        return ResponseEntity.ok(offerService.createLoanOffers(request));
+        log.info("New application request was received:\n{}", request);
+        List<LoanOfferDto> loanOffers = offerService.createLoanOffers(request);
+        loanOffers.sort(Comparator.comparing(LoanOfferDto::getRate));
+        log.info("Possible loan offers were created:\n{}", loanOffers);
+        return ResponseEntity.ok(loanOffers);
     }
 
 }

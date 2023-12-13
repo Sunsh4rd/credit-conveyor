@@ -16,7 +16,8 @@ public class ConveyorExceptionHandler {
 
     @ExceptionHandler({MethodArgumentNotValidException.class, CreditDeniedException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorDto> handleInvalidArguments(Exception e) {
+    public ResponseEntity<ErrorDto> handleConveyorExceptions(Exception e) {
+        log.error("Error in core conveyor service:\n{}", e.getMessage());
         return ResponseEntity
                 .badRequest()
                 .body(

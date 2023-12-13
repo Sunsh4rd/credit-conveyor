@@ -5,9 +5,54 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2def3c0-ce53-4cd0-8b85-a85df552bf1a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/sunshard/conveyor/api/deal/DealApi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/src/main/java/com/sunshard/conveyor/deal/ConveyorDealApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/src/main/java/com/sunshard/conveyor/deal/config/ApiDocumentationConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/src/main/java/com/sunshard/conveyor/deal/config/FeignClientConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/src/main/java/com/sunshard/conveyor/deal/controller/DealController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/src/main/java/com/sunshard/conveyor/deal/entity/Application.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/src/main/java/com/sunshard/conveyor/deal/entity/Client.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/src/main/java/com/sunshard/conveyor/deal/entity/Credit.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/src/main/java/com/sunshard/conveyor/deal/entity/json/Passport.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/src/main/java/com/sunshard/conveyor/deal/service/DealService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/src/main/java/com/sunshard/conveyor/deal/service/impl/DealServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/src/main/resources/application.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/src/main/resources/db/changelog/changeset/create-application-table.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/src/main/resources/db/changelog/changeset/create-client-table.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/src/main/resources/db/changelog/changeset/create-credit-table.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/src/main/resources/db/changelog/db.changelog-master.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/src/main/resources/log4j2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-deal/src/test/java/com/sunshard/conveyor/deal/ConveyorDealApplicationTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/ApplicationStatusHistoryDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/EmailMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/FinishRegistrationRequestDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/enums/ApplicationStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/enums/ChangeType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/enums/CreditStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/enums/EmploymentPosition.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/enums/Theme.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/controller/CalculationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/controller/CalculationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/controller/ConveyorExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/controller/ConveyorExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/controller/OfferController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/controller/OfferController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/service/impl/CalculationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/service/impl/CalculationServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/service/impl/OfferServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/service/impl/OfferServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/service/impl/ScoringServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-core/src/main/java/com/sunshard/conveyor/core/service/impl/ScoringServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../conveyor-core/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-core/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/CreditDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/CreditDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/EmploymentDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/EmploymentDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/LoanApplicationRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/LoanApplicationRequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/LoanOfferDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/LoanOfferDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/PaymentScheduleElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/PaymentScheduleElement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/ScoringDataDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/ScoringDataDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/validation/BirthDate.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/validation/BirthDate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/validation/BirthDateValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/../conveyor-models/src/main/java/com/sunshard/conveyor/model/validation/BirthDateValidator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,23 +72,36 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Maven.conveyor-apis [clean,install,-U].executor&quot;: &quot;Run&quot;,
     &quot;Maven.conveyor-apis [clean,install].executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;experimental&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/akrasnobaev/IdeaProjects/credit-conveyor/v2/conveyor-apis/src/main/java&quot;
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/akrasnobaev/IdeaProjects/credit-conveyor/v2/conveyor-apis/src/main/java&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\akrasnobaev\IdeaProjects\credit-conveyor\v2\conveyor-apis\src\main\java" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.sunshard.conveyor.api.deal" />
+    </key>
   </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="mvn clean install" />
+      <command value="mvn clean install -U" />
     </option>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-17.0.9-corretto-17.0.9-8336523bb0d9-93b19daf" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">

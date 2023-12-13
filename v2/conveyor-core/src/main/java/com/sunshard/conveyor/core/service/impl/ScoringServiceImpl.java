@@ -1,11 +1,11 @@
 package com.sunshard.conveyor.core.service.impl;
 
 import com.sunshard.conveyor.core.exception.CreditDeniedException;
-import com.sunshard.conveyor.core.service.ScoringService;
 import com.sunshard.conveyor.model.EmploymentDto;
 import com.sunshard.conveyor.model.PaymentScheduleElement;
 import com.sunshard.conveyor.model.ScoringDataDto;
 import com.sunshard.conveyor.model.enums.EmploymentStatus;
+import com.sunshard.conveyor.core.service.ScoringService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

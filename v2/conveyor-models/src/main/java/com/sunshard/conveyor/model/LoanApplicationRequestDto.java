@@ -3,10 +3,8 @@ package com.sunshard.conveyor.model;
 import com.sunshard.conveyor.model.validation.BirthDate;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -1,7 +1,6 @@
 package com.sunshard.conveyor.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -40,7 +39,7 @@ public class PaymentScheduleElement {
             example = "5000",
             description = "interest payment"
     )
-    private  BigDecimal interestPayment;
+    private BigDecimal interestPayment;
 
     @Schema(
             type = "number",
@@ -54,5 +53,5 @@ public class PaymentScheduleElement {
             example = "270000",
             description = "remaining debt"
     )
-    private  BigDecimal remainingDebt;
+    private BigDecimal remainingDebt;
 }
