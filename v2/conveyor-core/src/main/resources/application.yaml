@@ -1,0 +1,6 @@
+server:
+  port: 8081
+
+credit:
+  basic-rate: 15
+  insurance-price: 100000
