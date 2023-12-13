@@ -1,9 +1,9 @@
 package com.sunshard.conveyor.core.service.impl;
 
-import com.sunshard.conveyor.model.LoanApplicationRequestDto;
-import com.sunshard.conveyor.model.LoanOfferDto;
 import com.sunshard.conveyor.core.service.OfferService;
 import com.sunshard.conveyor.core.service.ScoringService;
+import com.sunshard.conveyor.model.LoanApplicationRequestDto;
+import com.sunshard.conveyor.model.LoanOfferDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -24,6 +24,7 @@ public class OfferServiceImpl implements OfferService {
 
     /**
      * Create a list of <i>loan offers</i> based on various  values of <i>isInsuranceEnabled</i> and <i>isSalaryClient</i>
+     *
      * @param request loan application request
      * @return list of possible loan offers
      * @see LoanApplicationRequestDto
@@ -41,9 +42,10 @@ public class OfferServiceImpl implements OfferService {
 
     /**
      * Create specific <i>loan offer</i> based on <i>isInsuranceEnabled</i> and <i>isSalaryClient</i>
+     *
      * @param isInsuranceEnabled specifies if insurance is enabled for <i>loan offer</i>
-     * @param isSalaryClient specifies if loaner is a salary client
-     * @param request loan application request
+     * @param isSalaryClient     specifies if loaner is a salary client
+     * @param request            loan application request
      * @return specific <i>loan offer</i> based on <i>isInsuranceEnabled</i> and <i>isSalaryClient</i>
      * @see LoanApplicationRequestDto
      * @see LoanOfferDto

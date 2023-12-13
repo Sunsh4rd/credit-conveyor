@@ -6,5 +6,5 @@ import com.sunshard.conveyor.model.ScoringDataDto;
 public interface CalculationService {
 
     CreditDto calculateCreditData(ScoringDataDto scoringData);
-    
+
 }

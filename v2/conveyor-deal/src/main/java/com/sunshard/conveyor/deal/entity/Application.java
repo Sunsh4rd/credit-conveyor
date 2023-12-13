@@ -3,11 +3,9 @@ package com.sunshard.conveyor.deal.entity;
 import com.sunshard.conveyor.model.ApplicationStatusHistoryDto;
 import com.sunshard.conveyor.model.LoanOfferDto;
 import com.sunshard.conveyor.model.enums.ApplicationStatus;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.Type;
-
-import jakarta.persistence.*;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;

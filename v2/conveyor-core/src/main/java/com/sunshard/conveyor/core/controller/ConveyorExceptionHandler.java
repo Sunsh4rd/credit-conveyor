@@ -22,9 +22,9 @@ public class ConveyorExceptionHandler {
                 .badRequest()
                 .body(
                         ErrorDto.builder()
-                        .errorCode(HttpStatus.BAD_REQUEST.value())
-                        .errorMessage(e.getMessage())
-                        .build()
+                                .errorCode(HttpStatus.BAD_REQUEST.value())
+                                .errorMessage(e.getMessage())
+                                .build()
                 );
     }
 

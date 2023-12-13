@@ -1,10 +1,10 @@
 package com.sunshard.conveyor.core.service.impl;
 
+import com.sunshard.conveyor.core.service.CalculationService;
+import com.sunshard.conveyor.core.service.ScoringService;
 import com.sunshard.conveyor.model.CreditDto;
 import com.sunshard.conveyor.model.PaymentScheduleElement;
 import com.sunshard.conveyor.model.ScoringDataDto;
-import com.sunshard.conveyor.core.service.CalculationService;
-import com.sunshard.conveyor.core.service.ScoringService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -24,6 +24,7 @@ public class CalculationServiceImpl implements CalculationService {
 
     /**
      * Returns calculated <i>credit data</i> based on <i>scoring details</i>
+     *
      * @param scoringData scoring data for credit calculation
      * @return calculated credit data
      * @see ScoringDataDto

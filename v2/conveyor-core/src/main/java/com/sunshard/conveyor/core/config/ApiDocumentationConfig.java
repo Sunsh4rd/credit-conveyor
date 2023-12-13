@@ -17,8 +17,8 @@ public class ApiDocumentationConfig {
                         .description("Conveyor microservice APIs")
                         .version("1.0.0")
                         .contact(new Contact()
-                                        .name("Sunsh4rd")
-                                        .email("ssoslickk@gmail.com")
+                                .name("Sunsh4rd")
+                                .email("ssoslickk@gmail.com")
                         )
                 );
     }

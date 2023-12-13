@@ -1,5 +1,6 @@
 package com.sunshard.conveyor.model;
 
+import com.sunshard.conveyor.model.enums.CreditStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -14,6 +15,14 @@ import java.util.List;
 @Builder
 @Schema(description = "Calculated credit data")
 public class CreditDto {
+
+    @Schema(
+            type = "integer",
+            format = "int64",
+            example = "1",
+            description = "credit id"
+    )
+    private Long id;
 
     @Schema(
             type = "number",
@@ -78,4 +87,12 @@ public class CreditDto {
     )
     @NotEmpty
     private List<PaymentScheduleElement> paymentSchedule;
+
+    @Schema(
+            type = "enum",
+            example = "CALCULATED",
+            description = "status of the credit"
+    )
+    @NotNull
+    private CreditStatus creditStatus;
 }

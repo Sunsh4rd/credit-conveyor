@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ConveyorCoreApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ConveyorCoreApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ConveyorCoreApplication.class, args);
+    }
 
 }

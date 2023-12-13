@@ -1,11 +1,11 @@
 package com.sunshard.conveyor.core.service.impl;
 
 import com.sunshard.conveyor.core.exception.CreditDeniedException;
+import com.sunshard.conveyor.core.service.ScoringService;
 import com.sunshard.conveyor.model.EmploymentDto;
 import com.sunshard.conveyor.model.PaymentScheduleElement;
 import com.sunshard.conveyor.model.ScoringDataDto;
 import com.sunshard.conveyor.model.enums.EmploymentStatus;
-import com.sunshard.conveyor.core.service.ScoringService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -42,22 +42,24 @@ public class ScoringServiceImpl implements ScoringService {
      * Calculate <i>loan rate</i> based on <i>isInsuranceEnabled</i> and <i>isSalaryClient</i>.<br>
      * If <i>isInsuranceEnabled</i> is <i>true</i> rate is decreased by 3.<br>
      * If <i>isSalaryClient</i> is <i>true</i> rate is decreased by 1.<br>
+     *
      * @param isInsuranceEnabled specifies if insurance is enabled for <i>loan offer</i>
-     * @param isSalaryClient specifies if loaner is a salary client
+     * @param isSalaryClient     specifies if loaner is a salary client
      * @return Calculated <i>loan rate</i>
      */
     @Override
     public BigDecimal calculateRate(Boolean isInsuranceEnabled, Boolean isSalaryClient) {
         BigDecimal currentRate = basicRate;
         BigDecimal rate = isInsuranceEnabled ? currentRate.subtract(THREE_PERCENT) : currentRate;
-        return isSalaryClient 
-               ? rate.subtract(BigDecimal.ONE).setScale(2, RoundingMode.HALF_UP)
-               : rate.setScale(2, RoundingMode.HALF_UP);
+        return isSalaryClient
+                ? rate.subtract(BigDecimal.ONE).setScale(2, RoundingMode.HALF_UP)
+                : rate.setScale(2, RoundingMode.HALF_UP);
     }
 
     /**
      * Calculate <i>monthly rate</i> based on <i>loan rate</i> by formula:<br>
      * rate / (12 * 100)
+     *
      * @param rate received <i>loan rate</i>
      * @return calculated <i>monthly rate</i>
      */
@@ -70,9 +72,10 @@ public class ScoringServiceImpl implements ScoringService {
      * Calculate <i>monthly payment</i> based on <i>monthlyRate</i>, <i>totalAmount</i> and <i>term</i> by formula:<br>
      * <i>annuityCoefficient</i> * <i>totalAmount</i><br>
      * where <i>annuityCoefficient</i> = (<i>monthlyRate</i> * (1 + <i>monthlyRate</i>) ^ <i>term</i>) / ((1 + <i>monthlyRate</i>) ^ <i>term</i> - 1)
+     *
      * @param monthlyRate monthly rate
      * @param totalAmount oan body
-     * @param term loan term
+     * @param term        loan term
      * @return calculated <i>monthly payment</i>
      */
     @Override
@@ -86,21 +89,23 @@ public class ScoringServiceImpl implements ScoringService {
 
     /**
      * Add insurance price to loan body if insurance is enabled
-     * @param amount initial loan body
+     *
+     * @param amount             initial loan body
      * @param isInsuranceEnabled specifies if insurance is enabled
      * @return new loan body
      */
     @Override
     public BigDecimal calculateLoanAmountBasedOnInsuranceStatus(BigDecimal amount, Boolean isInsuranceEnabled) {
         return isInsuranceEnabled ? amount.add(insurancePrice).setScale(2, RoundingMode.HALF_UP)
-                                  : amount.setScale(2, RoundingMode.HALF_UP);
+                : amount.setScale(2, RoundingMode.HALF_UP);
     }
 
     /**
      * Calculate total amount of money loaner should pay for the loan calculated by formula:<br>
      * monthlyPayment * term
+     *
      * @param monthlyPayment amount of monthly payment
-     * @param term loan term
+     * @param term           loan term
      * @return calculated total amount of paid money
      */
     @Override
@@ -110,9 +115,10 @@ public class ScoringServiceImpl implements ScoringService {
 
     /**
      * Check if loaner is able to loan. If not throw CreditDeniedException
+     *
      * @param employmentData loaners employment status, position, work experience and salary
-     * @param amount loan body
-     * @param birthDate loaner's birthdate
+     * @param amount         loan body
+     * @param birthDate      loaner's birthdate
      * @throws CreditDeniedException if loaner can not apply for the loan
      */
     @Override
@@ -148,6 +154,7 @@ public class ScoringServiceImpl implements ScoringService {
 
     /**
      * Calculate credit rate based on scoring data
+     *
      * @param scoringData loaner's scoring data
      * @return Calculated credit rate
      */
@@ -201,9 +208,10 @@ public class ScoringServiceImpl implements ScoringService {
      * Calculate elements of payment schedule.<br>
      * <i>nextInterestPayment = remainingDebt * rate / 100 * lengthOfMonth / lengthOfYear</i><br>
      * <i>nextDebtPayment = monthlyPayment - nextInterestPayment</i><br>
-     * @param amount loan body
-     * @param term loan term
-     * @param rate loan rate
+     *
+     * @param amount         loan body
+     * @param term           loan term
+     * @param rate           loan rate
      * @param monthlyPayment amount of money paid each month
      * @return list of payment schedule elements
      */
@@ -243,8 +251,9 @@ public class ScoringServiceImpl implements ScoringService {
      * Calculate full loan price based on payment schedule and loan amount by formula:<br>
      * <i>full loan price = (total payment / amount - 1) * 100</i><br>
      * where <i>total payment</i> = sum of monthly payments of each payment schedule element
+     *
      * @param paymentSchedule loan payment schedule
-     * @param amount loan amount
+     * @param amount          loan amount
      * @return Calculated full loan price
      */
     @Override

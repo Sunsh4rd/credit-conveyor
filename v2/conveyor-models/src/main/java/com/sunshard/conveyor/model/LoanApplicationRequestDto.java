@@ -82,7 +82,6 @@ public class LoanApplicationRequestDto {
             example = "6020",
             description = "your passport series"
     )
-//    @Pattern(regexp = "^[0-9]{4}$")
     @Digits(integer = 4, fraction = 0)
     @NotBlank
     private String passportSeries;
@@ -92,7 +91,6 @@ public class LoanApplicationRequestDto {
             example = "425513",
             description = "your passport number"
     )
-//    @Pattern(regexp = "^[0-9]{6}$")
     @Digits(integer = 6, fraction = 0)
     @NotBlank
     private String passportNumber;

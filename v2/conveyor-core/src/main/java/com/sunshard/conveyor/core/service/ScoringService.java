@@ -11,22 +11,30 @@ import java.util.List;
 public interface ScoringService {
 
     BigDecimal calculateRate(Boolean isInsuranceEnabled, Boolean isSalaryClient);
+
     BigDecimal calculateMonthlyRate(BigDecimal rate);
+
     BigDecimal calculateMonthlyPayment(BigDecimal monthlyRate, BigDecimal totalAmount, Integer term);
+
     BigDecimal calculateLoanAmountBasedOnInsuranceStatus(BigDecimal amount, Boolean isInsuranceEnabled);
+
     BigDecimal calculateTotalAmount(BigDecimal monthlyPayment, Integer term);
+
     void validateScoringData(
             EmploymentDto employmentData,
             BigDecimal amount,
             LocalDate birthDate
     );
+
     BigDecimal calculateCreditRate(ScoringDataDto scoringData);
+
     List<PaymentScheduleElement> calculatePaymentSchedule(
             BigDecimal amount,
             Integer term,
             BigDecimal rate,
             BigDecimal monthlyPayment
     );
+
     BigDecimal calculatePsk(List<PaymentScheduleElement> paymentSchedule, BigDecimal amount);
-    
+
 }
